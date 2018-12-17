@@ -114,6 +114,7 @@
     <ClCompile Include="tank_game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="tank.h" />
     <ClInclude Include="tank_game.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -23,5 +23,8 @@
     <ClInclude Include="tank_game.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="tank.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
