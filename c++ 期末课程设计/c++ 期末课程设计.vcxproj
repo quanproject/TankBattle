@@ -113,14 +113,14 @@
   <ItemGroup>
     <ClCompile Include="Buff.cpp" />
     <ClCompile Include="Tank.cpp" />
-    <ClCompile Include="tank_game.cpp" />
+    <ClCompile Include="main_game.cpp" />
     <ClCompile Include="Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buff.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="Tank.h" />
-    <ClInclude Include="tank_game.h" />
+    <ClInclude Include="main_game.h" />
     <ClInclude Include="Terrain.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

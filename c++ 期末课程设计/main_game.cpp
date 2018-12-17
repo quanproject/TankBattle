@@ -1,4 +1,4 @@
-﻿#include"tank_game.h"
+﻿#include"main_game.h"
 using namespace std;
 
 

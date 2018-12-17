@@ -15,3 +15,8 @@ const int SODWALL = 5;     //土墙 易破坏的墙
 const int STEEWALL = 6;    //铁墙 不易破坏的墙
 const int BRUSH = 7;       //灌木 坦克可以穿越 炮弹无法穿过
 const int RIVER = 8;       //河流 坦克不能穿越 炮弹可以穿越
+
+constexpr auto UP = 119;       //w 上
+constexpr auto DOWN = 115;     //s 下
+constexpr auto LEFT = 97;      //a 左
+constexpr auto RIGHT = 100;    //d 右
