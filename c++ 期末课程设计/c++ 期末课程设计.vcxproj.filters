@@ -18,12 +18,30 @@
     <ClCompile Include="tank_game.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Buff.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tank_game.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="tank.h">
+    <ClInclude Include="Tank.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Buff.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Shell.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

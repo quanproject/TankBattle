@@ -1,8 +1,8 @@
 #pragma once
-class tank
+class Tank
 {
 public:
-	tank();
-	~tank();
+	Tank();
+	~Tank();
 };
 
