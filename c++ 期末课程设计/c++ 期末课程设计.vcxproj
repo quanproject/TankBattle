@@ -112,12 +112,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Buff.cpp" />
+    <ClCompile Include="TankGameMenu.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="main_game.cpp" />
     <ClCompile Include="Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buff.h" />
+    <ClInclude Include="TankGameMenu.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="main_game.h" />
