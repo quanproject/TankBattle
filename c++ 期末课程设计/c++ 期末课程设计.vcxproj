@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Buff.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="TankGameMenu.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="main_game.cpp" />
@@ -119,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buff.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="TankGameMenu.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="Tank.h" />
