@@ -63,7 +63,7 @@ void TankGameMenu::printTankGameMenu()
 	}
 	if (flag == 1)//游戏开始
 	{
-		GameStart();
+		GameStart(1);
 	}
 	if (flag == 2)//游戏说明
 	{
@@ -122,6 +122,8 @@ void TankGameMenu::Inaugurated()
 //游戏开始
 void TankGameMenu::GameStart(int card)
 {
+	setfillcolor(BLACK);            //设置初始背景颜色
+	solidrectangle(0, 0, 1200, 900);      //画出背景色
 	//定义多个对象
 	//画地图Map类（根据card确定map
 	//画坦克
