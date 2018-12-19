@@ -17,21 +17,24 @@ Tank::~Tank()
 void Tank::MoveTank()
 {
 	if (_kbhit())       //如果有输入
-		Dir = _getch();
-
-	switch (Dir) {    //按照移动速度移动
-	case UP:
-		XY.Y-=Speed;
-		break;
-	case DOWN:
-		XY.Y+= Speed;
-		break;
-	case LEFT:
-		XY.X-= Speed;
-		break;
-	case RIGHT:
-		XY.X+= Speed;
-		break;
+	{
+		Dir = _getch();  //获取方向
+		switch (Dir) {    //按照移动速度移动
+		case UP:
+			XY.Y -= Speed;  //修改坐标
+			break;
+		case DOWN:
+			XY.Y += Speed;
+			break;
+		case LEFT:
+			XY.X -= Speed;
+			break;
+		case RIGHT:
+			XY.X += Speed;
+			break;
+		case 0:
+			break;
+		}
 	}
 }
 
@@ -57,4 +60,49 @@ void Tank:: ChangHp(int flag)
 void Tank::ChangeFireInterval(int NewInterval)
 {
 	FireInterval = NewInterval;
+}
+
+void Tank::PrintTank()
+{
+	IMAGE img1,img2;
+	loadimage(&img1, _T("PlayerTank.jpg")); //读取照片
+
+     //根据方向和位置打印坦克
+	if (Dir == UP)
+	{
+		putimage(XY.X, XY.Y, &img1);       //在固定位置打印坦克
+	}
+	else if (Dir == DOWN)
+	{
+		// 旋转图像 180 度 (PI / 6)
+		rotateimage(&img2, &img1, PI);
+
+		putimage(XY.X, XY.Y, &img2);
+
+	}
+	else if (Dir == LEFT)
+	{
+		// 旋转图像 270 度 (PI / 6)
+		rotateimage(&img2, &img1, PI / 2);
+
+		putimage(XY.X, XY.Y, &img2);
+
+	}
+	else
+	{
+		// 旋转图像 30 度 (PI / 6)
+		rotateimage(&img2, &img1, (3*PI) / 2);
+
+		putimage(XY.X, XY.Y, &img2);
+
+	}
+}
+
+void Tank::Fire()
+{
+	if (_kbhit())       //如果有输入
+	{
+
+	}
+	//考虑攻击间隔
 }

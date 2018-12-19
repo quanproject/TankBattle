@@ -25,3 +25,5 @@ constexpr auto LEFT = 97;      //a 左
 constexpr auto RIGHT = 100;    //d 右
 constexpr auto DETER = 106;    //j 开炮/确认
 constexpr auto ACT = 107;    //k 道具/退出/返回
+
+constexpr auto PI = 3.1415926535;         //用于旋转图片
