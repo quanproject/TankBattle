@@ -131,10 +131,10 @@ void TankGameMenu::GameStart(int card)
 	//画地图Map类（根据card确定map
 	//画坦克
 	//循环游戏过程
+	BeginBatchDraw();
 	while (1)
 	{
-		setfillcolor(BLACK);            //设置初始背景颜色
-		solidrectangle(0, 0, 1200, 900);      //画出背景色
+
 		//玩家操作
 		player.MoveTank();
 		//坦克移动（玩家+ai
@@ -143,9 +143,11 @@ void TankGameMenu::GameStart(int card)
 		//结算
 		//玩家生存状况（跳出
 		//通关判定（跳出并调用下一关
-
+		FlushBatchDraw();
 		Sleep(100); //游戏延迟
+		cleardevice();
 	}
+	EndBatchDraw();
 	//死亡界面
 	//再来一局or返回界面
 }
