@@ -125,7 +125,7 @@ void TankGameMenu::GameStart(int card)
 	setfillcolor(BLACK);            //设置初始背景颜色
 	solidrectangle(0, 0, 1200, 900);      //画出背景色
 	//定义多个对象
-	Tank player;
+	PlayTank player;
 	player.Setxy({ 0,0 });
 	player.PrintTank();
 	//画地图Map类（根据card确定map
