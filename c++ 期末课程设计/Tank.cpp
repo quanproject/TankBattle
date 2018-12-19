@@ -98,7 +98,8 @@ void Tank::PrintTank()
 	}
 }
 
-void Tank::Fire()
+/*
+void PlayTank::Fire()
 {
 	if (_kbhit())       //如果有输入
 	{
@@ -106,3 +107,28 @@ void Tank::Fire()
 	}
 	//考虑攻击间隔
 }
+
+void PlayTank::MoveTank()
+{
+	if (_kbhit())       //如果有输入
+	{
+		Dir = _getch();  //获取方向
+		switch (Dir) {    //按照移动速度移动
+		case UP:
+			XY.Y -= Speed;  //修改坐标
+			break;
+		case DOWN:
+			XY.Y += Speed;
+			break;
+		case LEFT:
+			XY.X -= Speed;
+			break;
+		case RIGHT:
+			XY.X += Speed;
+			break;
+		case 0:
+			break;
+		}
+	}
+}
+*/
