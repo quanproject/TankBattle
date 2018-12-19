@@ -132,15 +132,12 @@ void PlayTank::MoveTank()
 {
 	if (_kbhit())       //如果有输入
 	{
-		int flag=0;                //flag为0时只改变方向，为1时移动
 		int NewDir = _getch();  //获取方向
-		ChangeDir(NewDir);
-		if (NewDir == GetDir())
-			flag == 1;
-		if ((NewDir == UP || NewDir == DOWN || NewDir == RIGHT || NewDir == LEFT)&&flag==1)       //判断是否为方向操作，且是否为只改变方向
+		if (NewDir == UP || NewDir == DOWN || NewDir == RIGHT || NewDir == LEFT)       //判断是否为方向操作
 		{
 			COORD oldxy = Getxy();    //获取坐标
 			short speed = GetSpeed(); //获取速度
+			ChangeDir(NewDir);
 			switch (NewDir) {    //按照移动速度移动
 			case UP:
 				Setxy({ oldxy.X,oldxy.Y - speed });  //修改坐标
