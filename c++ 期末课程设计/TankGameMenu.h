@@ -1,7 +1,7 @@
 #pragma once
-//坦克大战菜单类
 #include"main_game.h"
 #include"Tank.h"
+//=============================菜单类===============================//
 class TankGameMenu
 {
 public:

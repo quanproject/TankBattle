@@ -1,4 +1,6 @@
 #pragma once
+#include"main_game.h"
+//=============================ÔöÒæÀà===============================//
 class Buff
 {
 public:

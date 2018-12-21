@@ -1,4 +1,5 @@
 #pragma once
+
 #include"main_game.h"
 //=============================炮弹类===============================//
 class Shell
@@ -23,53 +24,3 @@ private:
 
 
 ////////////////////////////类的实现//////////////////////////////
-
-void Shell::SetDirection(int dir)
-{
-	direction = dir;
-	flag = 1;        //确定炮弹状态
-}
-
-int Shell::Shoot()
-{
-	if (direction == UP)
-		while (flag)              //炮弹存在下一直飞行
-		{
-			ShellMotionUp();
-
-		}
-	else if (direction == DOWN)
-	{
-
-	}
-	else if (direction == LEFT)
-	{
-
-	}
-	else(direction == RIGHT)
-	{
-
-	}
-}
-
-void Shell::ShellMotionUp()
-{
-	--xy.Y;
-}
-void Shell:: ShellMotionDown()
-{
-	++xy.Y;
-}
-void Shell::ShellMotionLeft()
-{
-	--xy.X;
-}
-void Shell::ShellMotionRight()
-{
-	++xy.X;
-}
-
-void Shell::Kill()
-{
-	flag = 0;
-}

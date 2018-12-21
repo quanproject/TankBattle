@@ -4,9 +4,10 @@
 
 Tank::Tank()
 {
-	Speed = 15;
-	Hp = 1;
-	Dir = UP;
+	Speed = 6;          //初始速度
+	Hp = 1;             //初始生命
+	Dir = UP;           //初始方向
+	ReadyForFire = 1;   //开局装弹
 }
 
 
@@ -14,36 +15,13 @@ Tank::~Tank()
 {
 }
 
-void Tank::MoveTank()
-{
-	if (_kbhit())       //如果有输入
-	{
-		Dir = _getch();  //获取方向
-		switch (Dir) {    //按照移动速度移动
-		case UP:
-			XY.Y -= Speed;  //修改坐标
-			break;
-		case DOWN:
-			XY.Y += Speed;
-			break;
-		case LEFT:
-			XY.X -= Speed;
-			break;
-		case RIGHT:
-			XY.X += Speed;
-			break;
-		case 0:
-			break;
-		}
-	}
-}
 
 void Tank::ChangeSpeed(int newspeed)
 {
 	Speed = newspeed;
 }
 
-int Tank::GetSpeed()
+const int Tank::GetSpeed()
 {
 	return Speed;
 }
@@ -53,7 +31,7 @@ void Tank::Setxy(COORD xy)
 	XY = xy;
 }
 
-COORD Tank::Getxy()
+const COORD Tank::Getxy()
 {
 	return XY;
 }
@@ -72,7 +50,7 @@ void Tank::ChangeDir(int newdir)
 	Dir = newdir;
 }
 
-int Tank::GetDir()
+const int Tank::GetDir()
 {
 	return Dir;
 }
@@ -119,20 +97,37 @@ void Tank::PrintTank()
 }
 
 
+const int Tank::GetFireInterval()
+{
+	return FireInterval;
+}
+
+void Tank::FireIntevalFigure()
+{
+	static int nowInterval = GetFireInterval();  //初始化冷却时间
+	nowInterval--;                   //冷却ing
+	if (nowInterval == 0)           //冷却好了
+	{
+		nowInterval = GetFireInterval();  //重置冷却时间
+		ChangeReadyForFire(1);      //装弹（可以射击下一发
+	}
+}
+
+void Tank::ChangeReadyForFire(int ReadyOrNot)
+{
+	ReadyForFire = ReadyOrNot;
+}
+
 void PlayTank::Fire()
 {
-	if (_kbhit())       //如果有输入
-	{
+	ChangeReadyForFire(0);     //进入开火冷却
+	TankShell = new Shell;
 
-	}
 	//考虑攻击间隔
 }
 
-void PlayTank::MoveTank()
+void PlayTank::MoveTank(int NewDir)
 {
-	if (_kbhit())       //如果有输入
-	{
-		int NewDir = _getch();  //获取方向
 		if (NewDir == UP || NewDir == DOWN || NewDir == RIGHT || NewDir == LEFT)       //判断是否为方向操作
 		{
 			COORD oldxy = Getxy();    //获取坐标
@@ -153,5 +148,4 @@ void PlayTank::MoveTank()
 				break;
 			}
 		}
-	}
 }

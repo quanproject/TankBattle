@@ -124,32 +124,47 @@ void TankGameMenu::GameStart(int card)
 {
 	setfillcolor(BLACK);            //设置初始背景颜色
 	solidrectangle(0, 0, 1200, 900);      //画出背景色
+
+
+
+	/////////////////////////////////////////////////////////////////测试范围//////////////////////////////////////////////////
 	//定义多个对象
 	PlayTank player;
-	player.Setxy({ 0,0 });
-	player.PrintTank();
+	player.Setxy({ 0,0 });              //定位玩家初始坐标
+	player.PrintTank();                //打印玩家坦克
+	int operation;                    //记录操作键
 	//画地图Map类（根据card确定map
-	//画坦克
 	//循环游戏过程
 	BeginBatchDraw();
 	while (1)
 	{
+		if (_kbhit())       //如果有输入
+		{
+			operation= _getch();    //获取当前操作
+			if (operation == DETER)
+			{
 
-		//玩家操作
-		player.MoveTank();
-		//坦克移动（玩家+ai
+			}
+			if(operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)
+				player.MoveTank(operation);      //移动坦克
+			//玩家操作
+			//坦克移动（玩家+ai
+		}
 		player.PrintTank();
 		//炮弹移动
 		//结算
 		//玩家生存状况（跳出
 		//通关判定（跳出并调用下一关
 		FlushBatchDraw();
-		Sleep(100); //游戏延迟
+		Sleep(30); //游戏延迟
 		cleardevice();
 	}
 	EndBatchDraw();
 	//死亡界面
 	//再来一局or返回界面
+
+
+	//////////////////////////////////////////////////////////////////测试范围/////////////////////////////////////////////////////////
 }
 //游戏说明
 void TankGameMenu::Commeting()

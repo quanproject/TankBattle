@@ -1,4 +1,6 @@
 #pragma once
+#include"main_game.h"
+//=============================µÿ–Œ¿‡===============================//
 class Terrain
 {
 public:
