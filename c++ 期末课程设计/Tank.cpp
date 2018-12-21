@@ -4,10 +4,11 @@
 
 Tank::Tank()
 {
-	Speed = 6;          //初始速度
-	Hp = 1;             //初始生命
-	Dir = UP;           //初始方向
-	ReadyForFire = 1;   //开局装弹
+	Speed = SpeedLevel_1;           //初始速度
+	Hp = 1;                         //初始生命
+	Dir = UP;                       //初始方向
+	ReadyForFire = 1;               //开局装弹
+	FireInterval = IntervalLevel_1; //初始攻击间隔
 }
 
 
@@ -123,7 +124,7 @@ void PlayTank::Fire()
 	ChangeReadyForFire(0);     //进入开火冷却
 	TankShell = new Shell;
 
-	//考虑攻击间隔
+	
 }
 
 void PlayTank::MoveTank(int NewDir)

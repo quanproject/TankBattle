@@ -150,6 +150,8 @@ void TankGameMenu::GameStart(int card)
 			//玩家操作
 			//坦克移动（玩家+ai
 		}
+		player.FireIntevalFigure();          //计算玩家冷却缩减
+
 		player.PrintTank();
 		//炮弹移动
 		//结算

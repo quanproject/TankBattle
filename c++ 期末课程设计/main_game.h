@@ -27,3 +27,13 @@ constexpr auto DETER = 106;    //j 开炮/确认
 constexpr auto ACT = 107;    //k 道具/退出/返回
 
 constexpr auto PI = 3.1415926535;         //用于旋转图片
+
+
+//游戏平衡数据
+const int SpeedLevel_1 = 6;   //移动速度
+const int SpeedLevel_2 = 10;
+const int SpeedLevel_3 = 15;
+
+const int IntervalLevel_1 = 30;  //攻击冷却时间
+const int IntervalLevel_2 = 23;
+const int IntervalLevel_3 = 15;
