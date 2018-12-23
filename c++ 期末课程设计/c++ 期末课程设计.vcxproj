@@ -113,6 +113,7 @@
   <ItemGroup>
     <ClCompile Include="Buff.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Shell.cpp" />
     <ClCompile Include="TankGameMenu.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="main_game.cpp" />
@@ -126,6 +127,9 @@
     <ClInclude Include="Tank.h" />
     <ClInclude Include="main_game.h" />
     <ClInclude Include="Terrain.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

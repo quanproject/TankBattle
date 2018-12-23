@@ -37,3 +37,6 @@ const int SpeedLevel_3 = 15;
 const int IntervalLevel_1 = 30;  //攻击冷却时间
 const int IntervalLevel_2 = 23;
 const int IntervalLevel_3 = 15;
+
+const int ShellFlySpeed = 20;   //炮弹飞行速度
+const int GameSpeed = 30;       //游戏延迟30ms一帧

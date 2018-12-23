@@ -64,7 +64,7 @@ void Tank::ChangeFireInterval(int NewInterval)
 void Tank::PrintTank()
 {
 	IMAGE img1,img2;
-	loadimage(&img1, _T("PlayerTank.jpg")); //读取照片
+	loadimage(&img1, _T("PlayerTank.jpg")); //读取照片 （像素为60x60）
 
      //根据方向和位置打印坦克
 	if (Dir == UP)
@@ -97,7 +97,6 @@ void Tank::PrintTank()
 	}
 }
 
-
 const int Tank::GetFireInterval()
 {
 	return FireInterval;
@@ -122,9 +121,7 @@ void Tank::ChangeReadyForFire(int ReadyOrNot)
 void PlayTank::Fire()
 {
 	ChangeReadyForFire(0);     //进入开火冷却
-	TankShell = new Shell;
-
-	
+	TankShell = new Shell(GetDir(), Getxy());
 }
 
 void PlayTank::MoveTank(int NewDir)

@@ -143,6 +143,7 @@ void TankGameMenu::GameStart(int card)
 			operation= _getch();    //获取当前操作
 			if (operation == DETER)
 			{
+				player.Fire();
 
 			}
 			if(operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)
@@ -152,13 +153,16 @@ void TankGameMenu::GameStart(int card)
 		}
 		player.FireIntevalFigure();          //计算玩家冷却缩减
 
+	//	player.TankShell->Fly();
+	//	player.TankShell->Print();
+
 		player.PrintTank();
 		//炮弹移动
 		//结算
 		//玩家生存状况（跳出
 		//通关判定（跳出并调用下一关
 		FlushBatchDraw();
-		Sleep(30); //游戏延迟
+		Sleep(GameSpeed); //游戏延迟
 		cleardevice();
 	}
 	EndBatchDraw();
