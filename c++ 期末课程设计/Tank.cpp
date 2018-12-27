@@ -106,6 +106,7 @@ const int Tank::GetFireInterval()
 void Tank::FireIntevalFigure()
 {
 	static int nowInterval = GetFireInterval();  //初始化冷却时间
+	if(!GetReadyForFire())   //如果并没有冷却好，才开始减冷却
 	nowInterval--;                   //冷却ing
 	if (nowInterval == 0)           //冷却好了
 	{

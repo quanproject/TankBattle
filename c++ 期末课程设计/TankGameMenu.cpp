@@ -180,7 +180,7 @@ void TankGameMenu::GameStart(int card)
 			(*PTS)->Print();       //打印炮弹
 			(*PTS)->Fly();
 			//判断是否命中
-
+			//命中删除并释放内存
 
 		}
 
