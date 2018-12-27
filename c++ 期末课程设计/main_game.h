@@ -6,6 +6,7 @@
 #include<conio.h>
 #include<time.h>
 #include<windows.h>
+#include <list>          
 
 //常量定义
 constexpr auto GAMESIZE = 30;       //绘图使用的标准格数（一格为30像素
@@ -19,10 +20,7 @@ const int RIVER = 8;       //河流 坦克不能穿越 炮弹可以穿越
 
 
 //操作常量
-constexpr auto UP = 119;       //w 上
-constexpr auto DOWN = 115;     //s 下
-constexpr auto LEFT = 97;      //a 左
-constexpr auto RIGHT = 100;    //d 右
+const enum Dir { UP=119, DOWN=115, LEFT=97, RIGHT=100 };   //w上 a下 s左 d右
 constexpr auto DETER = 106;    //j 开炮/确认
 constexpr auto ACT = 107;    //k 道具/退出/返回
 

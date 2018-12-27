@@ -1,19 +1,16 @@
 #pragma once
 
-#include"main_game.h"
+#include "Object.h"
 //=============================炮弹类===============================//
-class Shell
+class Shell :public Object
 {
 public:
-	Shell(int dir, COORD xy);
+	Shell(Dir facedir, COORD xy);
 	~Shell();
-	void Print();                        //打印炮弹
-	void Fly();                          //炮弹飞行判断函数
-	const COORD GetShellxy();            //获取炮弹坐标（用于判断是否命中
-
+	COORD GetXY();     //获取炮弹方向
+	void Fly();
+	void Print();
 private:
-	int Direction;          //炮弹行进的方向
-	COORD XY;               //炮弹的当前坐标
 	int Flag;
 };
 

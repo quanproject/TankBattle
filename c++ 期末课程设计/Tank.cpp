@@ -6,9 +6,10 @@ Tank::Tank()
 {
 	Speed = SpeedLevel_1;           //初始速度
 	Hp = 1;                         //初始生命
-	Dir = UP;                       //初始方向
+	Direction = UP;                       //初始方向
 	ReadyForFire = 1;               //开局装弹
 	FireInterval = IntervalLevel_1; //初始攻击间隔
+	RectSphere = 60;                //坦克大小60x60像素
 }
 
 
@@ -46,14 +47,14 @@ void Tank:: ChangeHp(int flag)
 
 }
 
-void Tank::ChangeDir(int newdir)
+void Tank::ChangeDir(Dir newdir)
 {
-	Dir = newdir;
+	Direction = newdir;
 }
 
-const int Tank::GetDir()
+const Dir Tank::GetDir()
 {
-	return Dir;
+	return Direction;
 }
 
 void Tank::ChangeFireInterval(int NewInterval)
@@ -61,17 +62,17 @@ void Tank::ChangeFireInterval(int NewInterval)
 	FireInterval = NewInterval;
 }
 
-void Tank::PrintTank()
+void Tank::Print()
 {
 	IMAGE img1,img2;
 	loadimage(&img1, _T("PlayerTank.jpg")); //读取照片 （像素为60x60）
 
      //根据方向和位置打印坦克
-	if (Dir == UP)
+	if (Direction == UP)
 	{
 		putimage(XY.X, XY.Y, &img1);       //在固定位置打印坦克
 	}
-	else if (Dir == DOWN)
+	else if (Direction == DOWN)
 	{
 		// 旋转图像 180 度 (PI / 6)
 		rotateimage(&img2, &img1, PI);
@@ -79,7 +80,7 @@ void Tank::PrintTank()
 		putimage(XY.X, XY.Y, &img2);
 
 	}
-	else if (Dir == LEFT)
+	else if (Direction == LEFT)
 	{
 		// 旋转图像 270 度 (PI / 6)
 		rotateimage(&img2, &img1, PI / 2);
@@ -113,18 +114,32 @@ void Tank::FireIntevalFigure()
 	}
 }
 
+const bool Tank::GetReadyForFire()
+{
+	return ReadyForFire;
+}
+
 void Tank::ChangeReadyForFire(int ReadyOrNot)
 {
 	ReadyForFire = ReadyOrNot;
 }
 
+
+
+
+
+
+
+
+
+
 void PlayTank::Fire()
 {
 	ChangeReadyForFire(0);     //进入开火冷却
-	TankShell = new Shell(GetDir(), Getxy());
+
 }
 
-void PlayTank::MoveTank(int NewDir)
+void PlayTank::MoveTank(Dir NewDir)
 {
 		if (NewDir == UP || NewDir == DOWN || NewDir == RIGHT || NewDir == LEFT)       //判断是否为方向操作
 		{

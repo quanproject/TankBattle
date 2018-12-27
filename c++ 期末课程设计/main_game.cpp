@@ -24,6 +24,10 @@ int main()
 {
 	TankGameMenu GAME;
 	GAME.printTankGameMenu();
+
+
+
+
 	cout << "success！" << endl;
 	system("pause");
 	return 0;

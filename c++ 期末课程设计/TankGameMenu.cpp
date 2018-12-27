@@ -1,4 +1,5 @@
 #include "TankGameMenu.h"
+using namespace std;
 
 void const drawdre(COORD x);            //声明画方块函数
 
@@ -127,45 +128,88 @@ void TankGameMenu::GameStart(int card)
 
 
 
-	/////////////////////////////////////////////////////////////////测试范围//////////////////////////////////////////////////
+	////////////////////////////////////////////////////测试范围//////////////////////////////////////////////////
 	//定义多个对象
-	PlayTank player;
+
+
+
+	list<Shell*> PlayerTankShell;         //存储玩家坦克的子弹 容器
+	list<Shell*>::iterator PTS;           //玩家坦克的子弹 迭代器
+
+
+
+
+	PlayTank player;                    //定义玩家坦克
 	player.Setxy({ 0,0 });              //定位玩家初始坐标
-	player.PrintTank();                //打印玩家坦克
+
+
+
+
 	int operation;                    //记录操作键
 	//画地图Map类（根据card确定map
 	//循环游戏过程
-	BeginBatchDraw();
+	BeginBatchDraw();          //开始批量绘图
+
+
+
+
+
 	while (1)
 	{
-		if (_kbhit())       //如果有输入
+		if (_kbhit())       //如果玩家有输入
 		{
 			operation= _getch();    //获取当前操作
-			if (operation == DETER)
-			{
-				player.Fire();
 
+			if (operation == DETER && player.GetReadyForFire())          //确认攻击操作而且已经冷却好了
+			{
+				player.Fire();             //使玩家进入开炮冷却
+				Shell *p = new Shell(player.GetDir(),player.Getxy());   //申请新内存
+				p->Print();                                          //打印炮弹
+				PlayerTankShell.push_back(p);                       //压入炮弹容器
 			}
-			if(operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)
-				player.MoveTank(operation);      //移动坦克
+
+			if(operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)    //移动操作
+				player.MoveTank((Dir)operation);      //移动坦克        这里将int型强制转换为Dir（方向）类型
 			//玩家操作
-			//坦克移动（玩家+ai
+
+
 		}
-		player.FireIntevalFigure();          //计算玩家冷却缩减
+
+		for (PTS = PlayerTankShell.begin(); PTS != PlayerTankShell.end(); ++PTS)   //迭代器遍历对炮弹操作
+		{
+			(*PTS)->Print();       //打印炮弹
+			(*PTS)->Fly();
+			//判断是否命中
+
+
+		}
+
+
+
+
+
+
+
+
+
+
+		//坦克移动（玩家+ai
+
+		player.FireIntevalFigure();          //计算玩家开火冷却缩减
 
 	//	player.TankShell->Fly();
 	//	player.TankShell->Print();
 
-		player.PrintTank();
+		player.Print();  //打印玩家坦克
 		//炮弹移动
 		//结算
 		//玩家生存状况（跳出
 		//通关判定（跳出并调用下一关
-		FlushBatchDraw();
+		FlushBatchDraw();  //批量绘图
 		Sleep(GameSpeed); //游戏延迟
-		cleardevice();
+		cleardevice();    //清除屏幕
 	}
-	EndBatchDraw();
+	EndBatchDraw();         //结束批量绘图
 	//死亡界面
 	//再来一局or返回界面
 

@@ -59,6 +59,9 @@
     <ClInclude Include="Map.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -122,6 +122,7 @@
   <ItemGroup>
     <ClInclude Include="Buff.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="TankGameMenu.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="Tank.h" />

@@ -1,6 +1,7 @@
 #pragma once
 #include"main_game.h"
 #include"Tank.h"
+#include"Shell.h"
 //=============================≤Àµ•¿‡===============================//
 class TankGameMenu
 {
