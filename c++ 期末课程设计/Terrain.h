@@ -6,7 +6,8 @@ class Terrain
 public:
 	Terrain();
 	~Terrain();
-	virtual void Print(COORD xy)=0;       //打印地形
+	void SetXY(COORD xy) { XY.X = xy.X * 60; XY.Y = xy.Y * 60; }   //设定坐标
+	virtual void Print()=0;       //打印地形
 	const int GetHP() { return HP; }       //用来判断地形是否还存在
 	const bool GetTankThrough() { return TankThrough; }     //获取坦克能否穿越的信息
 	const bool GetShellThrough() { return ShellThrough; }   //获取炮弹能否穿越的信息

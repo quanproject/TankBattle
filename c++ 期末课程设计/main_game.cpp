@@ -5,6 +5,9 @@
 #include"Terrain.h"        //地形类
 using namespace std;
 
+
+
+
 //画正方形
 void const drawdre(COORD x)
 {

@@ -18,6 +18,12 @@ const int STEEWALL = 6;    //铁墙 不易破坏的墙
 const int BRUSH = 7;       //灌木 坦克可以穿越 炮弹无法穿过
 const int RIVER = 8;       //河流 坦克不能穿越 炮弹可以穿越
 
+struct MapTerrain
+{
+	bool TankT = 1, ShellT = 1; 
+};    //控制整个地图的地形属性 （标记坦克能否穿越等
+
+
 
 //操作常量
 const enum Dir { UP=119, DOWN=115, LEFT=97, RIGHT=100 };   //w上 a下 s左 d右

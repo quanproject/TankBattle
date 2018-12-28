@@ -2,6 +2,7 @@
 #include"main_game.h"
 #include"Tank.h"
 #include"Shell.h"
+#include"Map.h"
 //=============================≤Àµ•¿‡===============================//
 class TankGameMenu
 {

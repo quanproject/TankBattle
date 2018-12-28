@@ -132,25 +132,30 @@ void TankGameMenu::GameStart(int card)
 	//定义多个对象
 
 
-
-	list<Shell*> PlayerTankShell;         //存储玩家坦克的子弹 容器
-	list<Shell*>::iterator PTS;           //玩家坦克的子弹 迭代器
+	//容器
+	list<Shell*> PlayerTankShell;         //存储玩家坦克的子弹 
+	list<SodWall*> MapSodWall;            //储存地图上的可破坏墙
+	//迭代器
+	list<Shell*>::iterator PTS;           //玩家坦克的子弹
+	list<SodWall*>::iterator MSW;         //土墙
 
 
 
 
 	PlayTank player;                    //定义玩家坦克
+	Map gamemap;
+
 	player.Setxy({ 0,0 });              //定位玩家初始坐标
 
 
 
 
 	int operation;                    //记录操作键
-	//画地图Map类（根据card确定map
+
 	//循环游戏过程
 	BeginBatchDraw();          //开始批量绘图
 
-
+	
 
 
 
@@ -168,8 +173,11 @@ void TankGameMenu::GameStart(int card)
 				PlayerTankShell.push_back(p);                       //压入炮弹容器
 			}
 
-			if(operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)    //移动操作
+			if (operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)    //移动操作
+			{
+
 				player.MoveTank((Dir)operation);      //移动坦克        这里将int型强制转换为Dir（方向）类型
+			}
 			//玩家操作
 
 
@@ -189,7 +197,7 @@ void TankGameMenu::GameStart(int card)
 
 
 
-
+		gamemap.CreatMap_one();  //画地图Map类（根据card确定map
 
 
 
@@ -197,8 +205,7 @@ void TankGameMenu::GameStart(int card)
 
 		player.FireIntevalFigure();          //计算玩家开火冷却缩减
 
-	//	player.TankShell->Fly();
-	//	player.TankShell->Print();
+
 
 		player.Print();  //打印玩家坦克
 		//炮弹移动

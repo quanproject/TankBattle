@@ -146,7 +146,8 @@ void PlayTank::MoveTank(Dir NewDir)
 		{
 			COORD oldxy = Getxy();    //获取坐标
 			short speed = GetSpeed(); //获取速度
-			ChangeDir(NewDir);
+
+			if(NewDir==GetDir())
 			switch (NewDir) {    //按照移动速度移动
 			case UP:
 				Setxy({ oldxy.X,oldxy.Y - speed });  //修改坐标
@@ -161,5 +162,7 @@ void PlayTank::MoveTank(Dir NewDir)
 				Setxy({ oldxy.X + speed,oldxy.Y });
 				break;
 			}
+
+			ChangeDir(NewDir);
 		}
 }
