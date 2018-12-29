@@ -17,10 +17,10 @@ public:
 	void ReadyforAllMap();        //加载所有地图相同工作
 
 	void ReadyforMap_one();     //加载第一关的准备工作
-	void CreatMap_one();        //打印第一关
+	void PrintMap_one();        //打印第一关
 
 	void ReadyforMap_two();
-	void CreatMap_two();
+	void PrintMap_two();
 private:
 	MapTerrain MT[20][14];    //全地图的炮弹/坦克通过标记(以60x60像素为单位 
 	SteeWall *steewall;      //地形记录指针
@@ -30,7 +30,9 @@ private:
 	int num_river;
 	int num_brush;
 
-	int _x;    //用来画坐标
-	int _y;
+	//SteeWall testwall;       //测试墙
+
+	short _x;    //用来画坐标
+	short _y;
 };
 

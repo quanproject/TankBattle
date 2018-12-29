@@ -7,14 +7,12 @@ public:
 	Terrain();
 	~Terrain();
 	void SetXY(COORD xy) { XY.X = xy.X * 60; XY.Y = xy.Y * 60; }   //设定坐标
-	virtual void Print()=0;       //打印地形
+	virtual void Print() = 0;       //打印地形
 	const int GetHP() { return HP; }       //用来判断地形是否还存在
-	const bool GetTankThrough() { return TankThrough; }     //获取坦克能否穿越的信息
-	const bool GetShellThrough() { return ShellThrough; }   //获取炮弹能否穿越的信息
+	const MapTerrain GetMapTerrain(){return mapterrain;}    //获取地图穿越信息
 
 protected:
-	bool TankThrough;             //Tank能否穿越
-	bool ShellThrough;            //炮弹能否穿越
+	MapTerrain mapterrain;      //tank/炮弹能否穿越的信息
 	COORD XY;
 	int HP;
 };

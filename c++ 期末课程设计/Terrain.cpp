@@ -16,44 +16,44 @@ Terrain::~Terrain()
 
 Floor::Floor()
 {
-	TankThrough = 1;
-	ShellThrough = 1;
+	mapterrain.ShellT = 1;
+	mapterrain.TankT = 1;
 	HP = 1;         //地面不会掉血
 }
 
 SteeWall::SteeWall()
 {
-	TankThrough = 0;
-	ShellThrough = 0;
+	mapterrain.ShellT = 0;
+	mapterrain.TankT = 0;
 	HP = 1000;         //钢铁几乎无法破坏
 }
 
 SodWall::SodWall()
 {
 
-	TankThrough = 0;
-	ShellThrough = 0;
+	mapterrain.ShellT = 0;
+	mapterrain.TankT = 0;
 	HP = 2;         
 }
 
 Brush::Brush()
 {
-	TankThrough = 1;
-	ShellThrough = 0;
+	mapterrain.ShellT = 0;
+	mapterrain.TankT = 1;
 	HP = 1000;         
 }
 
 River::River()
 {
-	TankThrough = 0;
-	ShellThrough = 1;
+	mapterrain.ShellT = 1;
+	mapterrain.TankT = 0;
 	HP = 1000;        
 }
 
 Home::Home()
 {
-	TankThrough = 0;
-	ShellThrough = 0;
+	mapterrain.ShellT = 0;
+	mapterrain.TankT = 0;
 	HP = 1;
 	XY = { 20 * GAMESIZE,26 * GAMESIZE };  //初始坐标
 }

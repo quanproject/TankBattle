@@ -143,6 +143,7 @@ void TankGameMenu::GameStart(int card)
 
 
 	PlayTank player;                    //定义玩家坦克
+	COORD Judgmentxy;                   //用来判断是否遇到地形阻挡的 坐标记录
 	Map gamemap;
 
 	player.Setxy({ 0,0 });              //定位玩家初始坐标
@@ -152,13 +153,13 @@ void TankGameMenu::GameStart(int card)
 
 	int operation;                    //记录操作键
 
-	//循环游戏过程
+	
 	BeginBatchDraw();          //开始批量绘图
 
-	
+	gamemap.ReadyforAllMap();             //地图生成通用地形
 
 
-
+	//循环游戏过程
 	while (1)
 	{
 		if (_kbhit())       //如果玩家有输入
@@ -175,7 +176,25 @@ void TankGameMenu::GameStart(int card)
 
 			if (operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)    //移动操作
 			{
-
+				Judgmentxy = player.Getxy();   //记录当前坦克坐标
+				switch (operation) { 
+				case UP:
+					Judgmentxy.Y-=player.GetSpeed();  
+					break;
+				case DOWN:
+					Judgmentxy.Y += player.GetSpeed();
+					break;
+				case LEFT:
+					Judgmentxy.X -= player.GetSpeed();
+					break;
+				case RIGHT:
+					Judgmentxy.X += player.GetSpeed();
+					break;
+				}
+				if (gamemap.GetTankAdmit(Judgmentxy)                                  //判断四角
+					&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y + 59 })
+					&& gamemap.GetTankAdmit({ Judgmentxy.X ,Judgmentxy.Y + 59 })
+					&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y }))
 				player.MoveTank((Dir)operation);      //移动坦克        这里将int型强制转换为Dir（方向）类型
 			}
 			//玩家操作
@@ -186,9 +205,14 @@ void TankGameMenu::GameStart(int card)
 		for (PTS = PlayerTankShell.begin(); PTS != PlayerTankShell.end(); ++PTS)   //迭代器遍历对炮弹操作
 		{
 			(*PTS)->Print();       //打印炮弹
-			(*PTS)->Fly();
-			//判断是否命中
-			//命中删除并释放内存
+			(*PTS)->Fly();         //炮弹移动
+			if (!gamemap.GetShellAdmit((*PTS)->GetXY()))			//判断是否命中
+			{
+				list<Shell*>::iterator _PTS;
+				PTS = PlayerTankShell.erase(PTS);			//命中删除并释放内存
+			}
+
+
 
 		}
 
@@ -197,7 +221,7 @@ void TankGameMenu::GameStart(int card)
 
 
 
-		gamemap.CreatMap_one();  //画地图Map类（根据card确定map
+		gamemap.PrintMap_one();  //画地图Map类（根据card确定map
 
 
 
@@ -208,7 +232,7 @@ void TankGameMenu::GameStart(int card)
 
 
 		player.Print();  //打印玩家坦克
-		//炮弹移动
+
 		//结算
 		//玩家生存状况（跳出
 		//通关判定（跳出并调用下一关
