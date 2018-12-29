@@ -146,7 +146,7 @@ void TankGameMenu::GameStart(int card)
 	COORD Judgmentxy;                   //用来判断是否遇到地形阻挡的 坐标记录
 	Map gamemap;                         //定义地图
 	//IMAGE bg;                            //背景 
-	player.Setxy({ 15*GAMESIZE,24*GAMESIZE });              //定位玩家初始坐标
+	player.Setxy({ 14*GAMESIZE,24*GAMESIZE });              //定位玩家初始坐标
 
 
 
@@ -229,6 +229,7 @@ void TankGameMenu::GameStart(int card)
 
 		for (PTS = PlayerTankShell.begin(); PTS != PlayerTankShell.end();)   //迭代器遍历对炮弹操作
 		{
+
 			(*PTS)->Print();       //打印炮弹
 			(*PTS)->Fly();         //炮弹移动
 
@@ -245,8 +246,16 @@ void TankGameMenu::GameStart(int card)
 				PTS = PlayerTankShell.erase(PTS);	//删除并释放内存
 			}
 			else             //处理下一棵炮弹
-				++PTS;                          
+				++PTS;                        
+
+
+
+
+
+
 		}
+
+
 
 
 

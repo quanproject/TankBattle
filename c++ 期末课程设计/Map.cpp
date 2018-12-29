@@ -28,7 +28,7 @@ void Map::ChangeMap(COORD xy)
 	COORD _xy=Switchxy(xy);  //转换坐标
 	MapTerrain allthrough;   //任意可穿越地形
 
-	for (i = 0; i < 18; i++)
+	for (i = 0; i < num_sodwall; i++)
 		if (cor_cmp(_xy, sodwall[i].GetXY()))   //寻找被破坏的墙
 		{
 			sodwall[i].Destory();
@@ -90,7 +90,7 @@ void Map::ReadyforMap_one()
 		_x++;
 		if (i == 4)
 			_x += 8;
-		if (i == 9)
+		else if (i == 9)
 		{
 			_x = 9;
 			_y++;
@@ -110,9 +110,9 @@ void Map::ReadyforMap_one()
 			_x = 6;
 			_y = 7;
 		}
-		if (i == 4||i==6)
+		else if (i == 4||i==6)
 			_x = 13;
-		if (i == 5)
+		else if (i == 5)
 		{
 			_x = 6;
 			_y = 11;
@@ -132,16 +132,102 @@ void Map::ReadyforMap_one()
 			++_x;
 			++_y;
 		}
-		if (i == 11)
+		else if (i == 11)
 		{
 			++_x;
 			--_y;
 		}
-
-
 	}
-
-
+	_x = 1;
+	_y = 2;
+	for (i = 18; i < 50; ++i)
+	{
+		sodwall[i].SetXY({ _x,_y });                     //设置地形坐标
+		MT[_x][_y] = sodwall[i].GetMapTerrain();           //设置地形属性
+		++_x;
+		if (i == 19 || i == 23||i==27||i==31||i==35||i==39||i==43||i==47)
+			++_x;
+		else if (i == 21||i==29||i==37||i==45)
+			_x += 8;
+		else if (i == 25||i==41)
+		{
+			++_y;
+			_x = 1;
+		}
+		else if (i == 33)
+		{
+			_y=8;
+			_x = 1;
+		}
+	}
+	_x = 1;
+	_y = 4;
+	for (i = 50; i < 80; i++)
+	{
+		sodwall[i].SetXY({ _x,_y });                     //设置地形坐标
+		MT[_x][_y] = sodwall[i].GetMapTerrain();           //设置地形属性
+		++_x;
+		if (i == 55)
+			_x += 6;
+		else if (i == 61)
+		{
+			_y = 7;
+			_x = 0;
+		}
+		else if (i == 67)
+			_x += 8;
+		else if (i == 73)
+		{
+			_x = 7;
+			_y = 9;
+		}
+	}
+	_x = 1;
+	_y = 11;
+	for (i = 80; i < 108; i++)
+	{
+		sodwall[i].SetXY({ _x,_y });                     //设置地形坐标
+		MT[_x][_y] = sodwall[i].GetMapTerrain();           //设置地形属性
+		++_x;
+		if (i == 84 || i == 88 || i == 98||i==102)
+			_x += 2;
+		else if (i == 93)
+		{
+			_x = 1;
+			_y++;
+		}
+		else if (i == 99)
+			_y -= 4;
+		else if (i == 101)
+			_y += 4;
+	}
+	_x = 7;
+	_y = 6;
+	for (i = 108; i < num_sodwall; i++)
+	{
+		sodwall[i].SetXY({ _x,_y });                     //设置地形坐标
+		MT[_x][_y] = sodwall[i].GetMapTerrain();           //设置地形属性
+		++_x;
+		if (i == 109)
+			_x += 2;
+		else if (i == 111)
+		{
+			_x = 8;
+			--_y;
+		}
+		else if (i == 115)
+		{
+			_x = 9;
+			--_y;
+		}
+		else if (i == 117)
+		{
+			_x = 0;
+			_y = 8;
+		}
+		else if (i == 118)
+			_x += 18;
+	}
 
 	///////////////测试墙///////////////////////
 	//testwall.SetXY({ 3,4 });
@@ -163,7 +249,7 @@ const void Map::PrintMap_1()
 const void Map::PrintMap_2()
 {
 	int i;
-	for (i = 0; i < 18; i++)
+	for (i = 0; i < num_sodwall; i++)
 		sodwall[i].Print();
 	home.Print();
 }
