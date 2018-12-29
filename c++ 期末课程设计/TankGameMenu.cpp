@@ -134,19 +134,19 @@ void TankGameMenu::GameStart(int card)
 
 	//容器
 	list<Shell*> PlayerTankShell;         //存储玩家坦克的子弹 
-	list<SodWall*> MapSodWall;            //储存地图上的可破坏墙
+//	list<SodWall*> MapSodWall;            //储存地图上的可破坏墙
 	//迭代器
 	list<Shell*>::iterator PTS;           //玩家坦克的子弹
-	list<SodWall*>::iterator MSW;         //土墙
+//	list<SodWall*>::iterator MSW;         //土墙
 
 
 
 
 	PlayTank player;                    //定义玩家坦克
 	COORD Judgmentxy;                   //用来判断是否遇到地形阻挡的 坐标记录
-	Map gamemap;
-
-	player.Setxy({ 0,0 });              //定位玩家初始坐标
+	Map gamemap;                         //定义地图
+	//IMAGE bg;                            //背景 
+	player.Setxy({ 15*GAMESIZE,24*GAMESIZE });              //定位玩家初始坐标
 
 
 
@@ -156,7 +156,7 @@ void TankGameMenu::GameStart(int card)
 	
 	BeginBatchDraw();          //开始批量绘图
 
-	gamemap.ReadyforAllMap();             //地图生成通用地形
+	gamemap.ReadyforMap_one();            //地图生成通用地形
 
 
 	//循环游戏过程
@@ -177,6 +177,7 @@ void TankGameMenu::GameStart(int card)
 			if (operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)    //移动操作
 			{
 				Judgmentxy = player.Getxy();   //记录当前坦克坐标
+				player.ChangeDir((Dir)operation);           //修改坦克朝向
 				switch (operation) { 
 				case UP:
 					Judgmentxy.Y-=player.GetSpeed();  
@@ -191,10 +192,12 @@ void TankGameMenu::GameStart(int card)
 					Judgmentxy.X += player.GetSpeed();
 					break;
 				}
-				if (gamemap.GetTankAdmit(Judgmentxy)                                  //判断四角
+				if (gamemap.GetTankAdmit(Judgmentxy)                                  //判断四角是否与地形碰撞
 					&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y + 59 })
 					&& gamemap.GetTankAdmit({ Judgmentxy.X ,Judgmentxy.Y + 59 })
-					&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y }))
+					&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y })
+					&& !gamemap.JudgmentBorder(Judgmentxy)                             //判断两角是否超界
+					&&!gamemap.JudgmentBorder({ Judgmentxy.X + 59,Judgmentxy.Y + 59 }))
 				player.MoveTank((Dir)operation);      //移动坦克        这里将int型强制转换为Dir（方向）类型
 			}
 			//玩家操作
@@ -202,18 +205,47 @@ void TankGameMenu::GameStart(int card)
 
 		}
 
-		for (PTS = PlayerTankShell.begin(); PTS != PlayerTankShell.end(); ++PTS)   //迭代器遍历对炮弹操作
+		loadimage(NULL, _T("Floor.jpg"));          //背景地图
+
+
+
+		gamemap.PrintMap_2();   //画地图Map类（根据card确定map  坦克下方
+
+
+
+
+		player.Print();  //打印玩家坦克
+
+
+
+
+		gamemap.PrintMap_1();  //画地图Map类（根据card确定map   坦克上方
+
+
+
+
+
+
+
+		for (PTS = PlayerTankShell.begin(); PTS != PlayerTankShell.end();)   //迭代器遍历对炮弹操作
 		{
 			(*PTS)->Print();       //打印炮弹
 			(*PTS)->Fly();         //炮弹移动
-			if (!gamemap.GetShellAdmit((*PTS)->GetXY()))			//判断是否命中
+
+			if (!gamemap.GetShellAdmit((*PTS)->GetXY()))			          //判断是否打到地形
 			{
-				list<Shell*>::iterator _PTS;
-				PTS = PlayerTankShell.erase(PTS);			//命中删除并释放内存
+				gamemap.ChangeMap((*PTS)->GetXY()); //修改地图（减少墙体耐久
+				PTS = PlayerTankShell.erase(PTS);	//命中删除并释放内存
 			}
 
+		//	else if()              //判断命中坦克
 
-
+			else if (gamemap.JudgmentBorder((*PTS)->GetXY()))          //炮弹超界
+			{
+				PTS = PlayerTankShell.erase(PTS);	//删除并释放内存
+			}
+			else             //处理下一棵炮弹
+				++PTS;                          
 		}
 
 
@@ -221,7 +253,7 @@ void TankGameMenu::GameStart(int card)
 
 
 
-		gamemap.PrintMap_one();  //画地图Map类（根据card确定map
+
 
 
 
@@ -231,7 +263,6 @@ void TankGameMenu::GameStart(int card)
 
 
 
-		player.Print();  //打印玩家坦克
 
 		//结算
 		//玩家生存状况（跳出
