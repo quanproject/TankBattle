@@ -94,6 +94,7 @@ void River::Print()
 	loadimage(&img1, _T("River_0.jpg")); //读取照片 （像素为60x60）
 	else
 	loadimage(&img1, _T("River_1.jpg")); //读取照片 （像素为60x60）
+
 	putimage(XY.X, XY.Y, &img1);
 
 	if (Dynamic > 10000)         //防止爆炸
@@ -103,6 +104,18 @@ void River::Print()
 void Home::Print()
 {
 	IMAGE img1;
-	loadimage(&img1, _T("Home.jpg")); //读取照片 （像素为60x60）
+
+	Dynamic++;
+
+	if (Dynamic % 10 < 3)       //根据dynamic打印不同图片
+		loadimage(&img1, _T("Home_0.jpg")); //读取照片 （像素为60x60）
+	else if(Dynamic % 10 < 5|| Dynamic % 10>7)
+		loadimage(&img1, _T("Home_1.jpg")); //读取照片 （像素为60x60）
+	else
+	loadimage(&img1, _T("Home_2.jpg")); //读取照片 （像素为60x60）
+
 	putimage(XY.X, XY.Y, &img1);
+
+	if (Dynamic > 10000)         //防止爆炸
+		Dynamic = 0;
 }

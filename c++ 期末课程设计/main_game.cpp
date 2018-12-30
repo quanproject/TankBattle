@@ -14,12 +14,27 @@ void const drawdre(COORD x)
 }
 
 //坐标比较函数
-int const cor_cmp(COORD pt1, COORD pt2)
+bool const cor_cmp(COORD pt1, COORD pt2)
 {
 	return (pt1.X == pt2.X&&pt1.Y == pt2.Y); //相等便返回1
 }
 
+//炮弹命中坦克返回1
+bool const JudgmentKill(COORD shellxy, COORD tankxy)
+{
+	if (shellxy.X > tankxy.X
+		&&shellxy.X<tankxy.X + 60
+		&& shellxy.Y>tankxy.Y
+		&&shellxy.Y<tankxy.Y + 60
+		&& shellxy.X + 10>tankxy.X
+		&&shellxy.X + 10 < tankxy.X + 60
+		&& shellxy.Y + 10 > tankxy.Y
+		&&shellxy.Y + 10 < tankxy.Y + 60
+		)
+		return 1;
+	return 0;
 
+}
 
 //++++++++++++++++++++++++++++++++++++++++++++主函数+++++++++++++++++++++++++++++++++++++++++++++//
 int main()

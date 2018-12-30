@@ -16,6 +16,7 @@ protected:
 	MapTerrain mapterrain;      //tank/炮弹能否穿越的信息
 	COORD XY;
 	int HP;
+	int Dynamic;      //动态效果实现
 };
 
 //const int SODWALL = 5;     //土墙 易破坏的墙
@@ -55,8 +56,6 @@ class River :public Terrain
 public:
 	River();
 	void Print();
-private:
-	int Dynamic;      //河流动态效果实现
 };
 
 //家园类

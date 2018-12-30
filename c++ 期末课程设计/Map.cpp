@@ -1,9 +1,9 @@
 #include "Map.h"
 using namespace std;
 
-list<SodWall*> MapSodWall;            //储存地图上的可破坏墙
-list<SodWall*>::iterator MSW;         //土墙
-int const cor_cmp(COORD pt1, COORD pt2);
+
+
+bool const cor_cmp(COORD pt1, COORD pt2);
 
 Map::Map()
 {
@@ -40,18 +40,22 @@ void Map::ChangeMap(COORD xy)
 
 }
 
-
 void Map::CloseMap()
 {
-
+	delete[] sodwall;
+	delete[] steewall;
+	delete[] river;
+	delete[] brush;
 }
 
 void Map::ReadyforMap_one()
 {
-	num_stee = 26;
+	num_stee = 26;           //设置本关各个物件数量
 	num_river = 12;
 	num_brush = 8;
 	num_sodwall = 120;
+	num_normaltank = 10;
+	num_bosstank = 2;
 
 	steewall = new SteeWall[num_stee];
 	river = new River[num_river];
@@ -229,10 +233,28 @@ void Map::ReadyforMap_one()
 			_x += 18;
 	}
 
-	///////////////测试墙///////////////////////
-	//testwall.SetXY({ 3,4 });
-	//MT[3][4] = testwall.GetMapTerrain();
-	////////////////////////////////////////
+
+}
+
+COORD Map::CreatObjectXY()
+{
+	COORD _xy;          //要生成的坐标
+	int flag;           //用来判断是否生成位置正确
+
+	srand((unsigned int)time(NULL));
+
+	do {
+		flag = 0;
+		_xy.X = rand() % (1100) ;   //20是地图宽度
+		_xy.Y = rand() % (540) ;     //9为地图上半部分
+		_xy.X = (_xy.X / 60) * 60;
+		_xy.Y = (_xy.Y / 60) * 60;
+
+		if (!GetTankAdmit(_xy))        //判断坦克是否能到这个位置
+			flag = 1;
+
+	} while (flag);
+	return _xy;
 }
 
 const void Map::PrintMap_1()

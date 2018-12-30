@@ -43,4 +43,4 @@ const int IntervalLevel_2 = 10;
 const int IntervalLevel_3 = 7;
 
 const int ShellFlySpeed = 35;   //炮弹飞行速度
-const int GameSpeed = 30;       //游戏延迟30ms一帧
+const int GameSpeed = 40;       //游戏延迟30ms一帧

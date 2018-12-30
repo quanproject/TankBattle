@@ -1,7 +1,9 @@
 #include "TankGameMenu.h"
 using namespace std;
 
-void const drawdre(COORD x);            //声明画方块函数
+void const drawdre(COORD x);              //画方块函数
+bool const cor_cmp(COORD pt1, COORD pt2);  //坐标比较函数
+bool const JudgmentKill(COORD shellxy, COORD tankxy); //命中函数
 
 TankGameMenu::TankGameMenu()
 {
@@ -134,10 +136,14 @@ void TankGameMenu::GameStart(int card)
 
 	//容器
 	list<Shell*> PlayerTankShell;         //存储玩家坦克的子弹 
-//	list<SodWall*> MapSodWall;            //储存地图上的可破坏墙
+	list<Shell*> EnemyTankShell;          //储存敌方坦克的子弹
+	list<NormalAITank*> NormalTank;       //储存敌方坦克
+
+
 	//迭代器
 	list<Shell*>::iterator PTS;           //玩家坦克的子弹
-//	list<SodWall*>::iterator MSW;         //土墙
+	list<Shell*>::iterator ETS;           //敌方坦克的子弹
+	list<NormalAITank*>::iterator NT;     //敌方坦克
 
 
 
@@ -145,9 +151,8 @@ void TankGameMenu::GameStart(int card)
 	PlayTank player;                    //定义玩家坦克
 	COORD Judgmentxy;                   //用来判断是否遇到地形阻挡的 坐标记录
 	Map gamemap;                         //定义地图
-	//IMAGE bg;                            //背景 
-	player.Setxy({ 14*GAMESIZE,24*GAMESIZE });              //定位玩家初始坐标
 
+	player.Setxy({ 14*GAMESIZE,24*GAMESIZE });              //定位玩家初始坐标
 
 
 
@@ -158,10 +163,13 @@ void TankGameMenu::GameStart(int card)
 
 	gamemap.ReadyforMap_one();            //地图生成通用地形
 
+	//player.Setxy(gamemap.CreatObjectXY());             //随机生成坐标位置
+
 
 	//循环游戏过程
 	while (1)
 	{
+		//玩家按键操作响应
 		if (_kbhit())       //如果玩家有输入
 		{
 			operation= _getch();    //获取当前操作
@@ -174,7 +182,7 @@ void TankGameMenu::GameStart(int card)
 				PlayerTankShell.push_back(p);                       //压入炮弹容器
 			}
 
-			if (operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)    //移动操作
+			else if (operation == UP || operation == DOWN || operation == RIGHT || operation == LEFT)    //移动操作
 			{
 				Judgmentxy = player.Getxy();   //记录当前坦克坐标
 				player.ChangeDir((Dir)operation);           //修改坦克朝向
@@ -201,77 +209,141 @@ void TankGameMenu::GameStart(int card)
 				player.MoveTank((Dir)operation);      //移动坦克        这里将int型强制转换为Dir（方向）类型
 			}
 			//玩家操作
-
-
 		}
 
+
+		//生成敌方坦克	
+		if (gamemap.GetNumNormalTank() > 0 && NormalTank.size()< 2)   //场上少于4个敌方坦克且坦克还有剩余
+		{
+			NormalAITank *p=new NormalAITank();        //分配tank内存
+		//	gamemap.KillNormalTank();             //被击杀
+			p->Setxy(gamemap.CreatObjectXY());        //随机分配位置
+			NormalTank.push_back(p);          //压入
+			Sleep(1);
+		}
+		
+		///////////////////////////////////打印环节//////////////////////////////////////
 		loadimage(NULL, _T("Floor.jpg"));          //背景地图
-
-
-
 		gamemap.PrintMap_2();   //画地图Map类（根据card确定map  坦克下方
-
-
-
-
 		player.Print();  //打印玩家坦克
 
+		 //对所有普通敌方坦克操作（开火，移动，打印
+		for (NT = NormalTank.begin(); NT != NormalTank.end();)  
+		{
+			if ((*NT)->GetHP() == 0)
+			{
+				NT = NormalTank.erase(NT);       //释放内存
+			}
+			else
+			{
+				Dir movedir = (*NT)->NormalMoveAI();    //调用普通坦克移动ai
+				Judgmentxy = (*NT)->Getxy();        //记录当前坦克坐标
 
 
 
+				if ((*NT)->GetReadyForFire())        //开火判断（好了就打
+				{
+					(*NT)->ChangeReadyForFire(0);     //冷却
+					Shell *p = new Shell(movedir, Judgmentxy);   //申请新内存
+					p->Print();
+					EnemyTankShell.push_back(p);                       //压入炮弹容器
+				}
+
+
+
+
+				(*NT)->ChangeDir(movedir);          //修改坦克朝向
+				switch (movedir) {
+				case UP:
+					Judgmentxy.Y -= SpeedLevel_1;
+					break;
+				case DOWN:
+					Judgmentxy.Y += SpeedLevel_1;
+					break;
+				case LEFT:
+					Judgmentxy.X -= SpeedLevel_1;
+					break;
+				case RIGHT:
+					Judgmentxy.X += SpeedLevel_1;
+					break;
+				}
+				if (gamemap.GetTankAdmit(Judgmentxy)                                  //判断四角是否与地形碰撞
+					&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y + 59 })
+					&& gamemap.GetTankAdmit({ Judgmentxy.X ,Judgmentxy.Y + 59 })
+					&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y })
+					&& !gamemap.JudgmentBorder(Judgmentxy)                             //判断两角是否超界
+					&& !gamemap.JudgmentBorder({ Judgmentxy.X + 59,Judgmentxy.Y + 59 }))
+					(*NT)->MoveTank(movedir);      //移动敌方普通坦克        
+
+				(*NT)->Print();         //打印坦克
+
+
+				++NT;           //对下一个坦克操作
+			}
+		}
 		gamemap.PrintMap_1();  //画地图Map类（根据card确定map   坦克上方
 
 
-
-
-
-
-
-		for (PTS = PlayerTankShell.begin(); PTS != PlayerTankShell.end();)   //迭代器遍历对炮弹操作
+		//迭代器遍历对玩家炮弹操作
+		for (PTS = PlayerTankShell.begin(); PTS != PlayerTankShell.end();)   
 		{
 
 			(*PTS)->Print();       //打印炮弹
 			(*PTS)->Fly();         //炮弹移动
+			COORD Shellxy = (*PTS)->GetXY();  //记录炮弹坐标
+			bool flag = 0;        //是否命中敌方坦克的标志
+
+			for (NT = NormalTank.begin(); NT != NormalTank.end(); NT++)      //遍历坦克来确认有没有命中
+			{
+				if (JudgmentKill(Shellxy, (*NT)->Getxy()))  //命中
+				{
+					(*NT)->ChangeHp(0);           //减少HP
+					flag = 1;
+					break;
+				}
+			}
 
 			if (!gamemap.GetShellAdmit((*PTS)->GetXY()))			          //判断是否打到地形
 			{
 				gamemap.ChangeMap((*PTS)->GetXY()); //修改地图（减少墙体耐久
 				PTS = PlayerTankShell.erase(PTS);	//命中删除并释放内存
 			}
-
-		//	else if()              //判断命中坦克
-
-			else if (gamemap.JudgmentBorder((*PTS)->GetXY()))          //炮弹超界
+			else if (gamemap.JudgmentBorder((*PTS)->GetXY())||flag)          //炮弹超界
 			{
 				PTS = PlayerTankShell.erase(PTS);	//删除并释放内存
 			}
 			else             //处理下一棵炮弹
-				++PTS;                        
-
-
-
-
-
-
+			{
+				++PTS;
+			}
 		}
 
+		//迭代器遍历对敌方炮弹操作
+		for (ETS = EnemyTankShell.begin(); ETS != EnemyTankShell.end();)  
+		{
 
+			(*ETS)->Print();       //打印炮弹
+			(*ETS)->Fly();         //炮弹移动
 
+			if (!gamemap.GetShellAdmit((*ETS)->GetXY()))			          //判断是否打到地形
+			{
+				gamemap.ChangeMap((*ETS)->GetXY()); //修改地图（减少墙体耐久
+				ETS = EnemyTankShell.erase(ETS);	//命中删除并释放内存
+			}
 
+			//	else if()              //判断命中坦克
 
-
-
-
-
-
-
-
-		//坦克移动（玩家+ai
+			else if (gamemap.JudgmentBorder((*ETS)->GetXY()))          //炮弹超界
+			{
+				ETS = EnemyTankShell.erase(ETS);	//删除并释放内存
+			}
+			else             //处理下一棵炮弹
+				++ETS;
+		}
 
 		player.FireIntevalFigure();          //计算玩家开火冷却缩减
-
-
-
+		for (NT = NormalTank.begin(); NT != NormalTank.end(); NT++)
+			(*NT)->FireIntevalFigure();      //计算敌方炮弹冷却
 
 		//结算
 		//玩家生存状况（跳出
@@ -281,6 +353,7 @@ void TankGameMenu::GameStart(int card)
 		cleardevice();    //清除屏幕
 	}
 	EndBatchDraw();         //结束批量绘图
+	gamemap.CloseMap();     //释放地图内存
 	//死亡界面
 	//再来一局or返回界面
 
