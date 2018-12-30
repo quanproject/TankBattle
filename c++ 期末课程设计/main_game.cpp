@@ -15,6 +15,7 @@ list<NormalAITank*> NormalTank;       //储存敌方坦克
 list<Shell*>::iterator PTS;           //玩家坦克的子弹
 list<Shell*>::iterator ETS;           //敌方坦克的子弹
 list<NormalAITank*>::iterator NT;     //敌方坦克
+list<NormalAITank*>::iterator _NT;     //敌方坦克
 
 
 //画正方形
@@ -49,17 +50,30 @@ bool const JudgmentKill(COORD shellxy, COORD tankxy)
 //判断是否跟坦克碰撞
 bool const JudgmentTankCollisoin(COORD Tankxy)
 {
-	for (NT = NormalTank.begin(); NT != NormalTank.end();)
+	for (_NT = NormalTank.begin(); _NT != NormalTank.end();_NT++)
 	{
-		COORD otherTank = (*NT)->Getxy();
-		if ((Tankxy.X > otherTank.X
-			&&Tankxy.X < otherTank.X + 60
-			&& Tankxy.Y > otherTank.Y
-			&&Tankxy.Y < otherTank.Y + 60)
-			|| (Tankxy.X + 60 > otherTank.X
-				&&Tankxy.X + 60 < otherTank.X + 60
-				&& Tankxy.Y + 60 > otherTank.Y
-				&&Tankxy.Y + 60 < otherTank.Y + 60))
+		COORD otherTank = (*_NT)->Getxy();
+		if (cor_cmp(otherTank, Tankxy))  //跳过自己
+			;
+		else if ((Tankxy.X >= otherTank.X
+			&&Tankxy.X <= otherTank.X + 59
+			&& Tankxy.Y >= otherTank.Y
+			&&Tankxy.Y <= otherTank.Y + 59)
+			
+			|| (Tankxy.X + 59 >=otherTank.X+1
+				&&Tankxy.X + 60 <= otherTank.X + 59
+				&& Tankxy.Y + 59 >= otherTank.Y+1
+				&&Tankxy.Y + 60 <= otherTank.Y + 59)
+			|| (Tankxy.X  >= otherTank.X+1
+				&&Tankxy.X  <=otherTank.X + 59
+				&& Tankxy.Y + 59 >= otherTank.Y+1
+				&&Tankxy.Y + 60 <= otherTank.Y + 59)
+			|| (Tankxy.X + 60 >= otherTank.X+1
+				&&Tankxy.X + 60 <= otherTank.X + 59
+				&& Tankxy.Y  >= otherTank.Y
+				&&Tankxy.Y  <= otherTank.Y + 59)
+				)
+
 		{
 			return 1;
 			break;
@@ -233,7 +247,7 @@ int main()
 						&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y })
 						&& !gamemap.JudgmentBorder(Judgmentxy)                             //判断两角是否超界
 						&& !gamemap.JudgmentBorder({ Judgmentxy.X + 59,Judgmentxy.Y + 59 })
-						/*&&!JudgmentTankCollisoin(Judgmentxy)*/)
+						&&!JudgmentTankCollisoin(Judgmentxy))
 						(*NT)->MoveTank(movedir);      //移动敌方普通坦克        
 
 					(*NT)->Print();         //打印坦克
