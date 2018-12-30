@@ -21,7 +21,7 @@ public:
 	const int GetSpeed() { return Speed; }                                   //获取坦克速度
 	const Dir GetDir() { return Direction; }                                 //获取坦克方向
 //	const int GetFireInterval() {return  FireInterval;}                      //获取攻击间隔
-	const bool GetReadyForFire() { return ReadyForFire; }                    //获取坦克能否开炮的状态
+	bool GetReadyForFire() { return ReadyForFire; }                    //获取坦克能否开炮的状态
 	const int GetHP() { return Hp; }                                         //获取坦克血量
 
 	void ChangeHp(int flag);                          //修改坦克血量
@@ -33,6 +33,7 @@ protected:
 	int Hp;              //坦克血量
 	int FireInterval;    //攻击间隔
 	bool ReadyForFire;   //表示是否可以射击  1为可以
+	int nowInterval;     //当前的攻击冷却进度
 
 };
 
@@ -55,6 +56,7 @@ public:
 	void Print();
 	void MoveTank(Dir NewDir);
 	void Fire() {};
+
 };
 
 //精英ai坦克类

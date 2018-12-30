@@ -33,10 +33,9 @@ void Tank:: ChangeHp(int flag)
 
 void Tank::FireIntevalFigure()
 {
-	static int nowInterval = FireInterval;  //初始化冷却时间
 	if(!ReadyForFire)   //如果并没有冷却好，才开始减冷却
 	nowInterval--;                   //冷却ing
-	if (nowInterval == 0)           //冷却好了
+	if (nowInterval <= 0)           //冷却好了
 	{
 		nowInterval = FireInterval;  //重置冷却时间
 		ReadyForFire=1;      //装弹（可以射击下一发
@@ -52,6 +51,7 @@ PlayTank::PlayTank()
 	ReadyForFire = 1;               //开局装弹
 	FireInterval = IntervalLevel_1; //初始攻击间隔
 	RectSphere = 60;                //坦克大小60x60像素
+	nowInterval = FireInterval;  //初始化冷却时间
 }
 
 void PlayTank::Fire()
@@ -119,7 +119,7 @@ NormalAITank::NormalAITank()
 	Speed = SpeedLevel_1;           //初始速度
 	Hp = 1;                         //初始生命
 	Direction = UP;                 //初始方向
-	ReadyForFire = 1;               //开局装弹
+	ReadyForFire = 0;               //开局装弹
 	FireInterval = IntervalLevel_1; //初始攻击间隔
 	RectSphere = 60;                //坦克大小60x60像素
 }
