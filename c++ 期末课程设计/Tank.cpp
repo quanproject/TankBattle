@@ -6,14 +6,7 @@ using namespace std;
 
 Tank::Tank()
 {
-	/*
-	Speed = SpeedLevel_1;           //初始速度
-	Hp = 1;                         //初始生命
-	Direction = UP;                 //初始方向
-	ReadyForFire = 1;               //开局装弹
-	FireInterval = IntervalLevel_1; //初始攻击间隔
-	RectSphere = 60;                //坦克大小60x60像素
-	*/
+
 }
 
 
@@ -45,7 +38,7 @@ void Tank::FireIntevalFigure()
 //////////////////////////////////////玩家tank////////////////////////////////
 PlayTank::PlayTank()
 {
-	Speed = SpeedLevel_1;           //初始速度
+	Speed = SpeedLevel_3;           //初始速度
 	Hp = 1;                         //初始生命
 	Direction = UP;                 //初始方向
 	ReadyForFire = 1;               //开局装弹
