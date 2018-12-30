@@ -52,7 +52,7 @@ class NormalAITank :public Tank
 {
 public:
 	NormalAITank();
-	Dir NormalMoveAI();          //普通坦克移动ai
+	Dir NormalMoveAI(int h);          //普通坦克移动ai
 	void Print();
 	void MoveTank(Dir NewDir);
 	void Fire() {};

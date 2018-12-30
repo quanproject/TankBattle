@@ -160,20 +160,20 @@ void NormalAITank::Print()
 	}
 }
 
-Dir NormalAITank::NormalMoveAI()
+Dir NormalAITank::NormalMoveAI(int h)
 {
 
-	srand((unsigned int)time(NULL));
-
-	int n = rand() % 5;
-	switch (n)
-	{
-	case 0:return Direction; break;   //继续走
-	case 1:return DOWN;  break;       //四个方向移动
-	case 2:return RIGHT; break;
-	case 3:return LEFT;  break;
-	case 4:return RIGHT; break;
-	}
+	int n = h % 15;
+	if (n < 11)
+		return Direction;  //大多情况下保持原方向不变
+	else if (n < 12)
+		return UP;
+	else if (n < 13)
+		return DOWN;
+	else if (n < 14)
+		return LEFT;
+	else
+		return DOWN;
 }
 
 void NormalAITank::MoveTank(Dir NewDir)

@@ -236,18 +236,17 @@ void Map::ReadyforMap_one()
 
 }
 
-COORD Map::CreatObjectXY()
+COORD Map::CreatObjectXY(int h)
 {
 	COORD _xy;          //要生成的坐标
 	int flag;           //用来判断是否生成位置正确
-
 	srand((unsigned int)time(NULL));
 
 	do {
 		flag = 0;
-		//敌方剩余坦克数量会不断减少，保证1s内生成不同的初始坐标
-		_xy.X = rand() % (1100) ;    //1200是地图宽度
-		_xy.Y = rand() % (540) ;     //540为地图上半部分
+		//防止传进来的随机数永远不符合条件，再随机一次
+		_xy.X = (rand()+h) % (1100) ;    //1200是地图宽度
+		_xy.Y = (rand()+h) % (540) ;     //540为地图上半部分
 		_xy.X = (_xy.X / 60) * 60;
 		_xy.Y = (_xy.Y / 60) * 60;
 

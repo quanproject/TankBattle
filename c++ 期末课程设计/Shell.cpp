@@ -31,7 +31,9 @@ Shell::Shell(Dir facedir, COORD xy)
 
 Shell::~Shell()
 {
-
+	IMAGE img;
+	loadimage(&img, _T("Boom.jpg"));
+	putimage(XY.X, XY.Y, &img);
 }
 
 void Shell::Print()

@@ -22,7 +22,7 @@ public:
 	const void PrintMap_1();               //打印地图(在坦克上面的
 	const void PrintMap_2();               //打印地图（在坦克下面的
 	void CloseMap();                       //释放内存，结束游戏或准备下张地图
-	COORD CreatObjectXY();                 //随机在地图上部范围内生成坐标，用来给野生坦克和野生buff提供出生点
+	COORD CreatObjectXY(int h);                 //随机在地图上部范围内生成坐标，用来给野生坦克和野生buff提供出生点
 
 
 	void ReadyforMap_one();     //加载第一关的准备工作

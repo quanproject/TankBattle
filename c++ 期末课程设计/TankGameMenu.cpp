@@ -129,6 +129,7 @@ void TankGameMenu::GameStart(int card)
 	setfillcolor(BLACK);            //设置初始背景颜色
 	solidrectangle(0, 0, 1200, 900);      //画出背景色
 
+	srand((unsigned int)time(NULL));
 
 
 	////////////////////////////////////////////////////测试范围//////////////////////////////////////////////////
@@ -158,7 +159,7 @@ void TankGameMenu::GameStart(int card)
 
 
 	int operation;                    //记录操作键
-
+	int random;                       //一个随机数
 	
 	BeginBatchDraw();          //开始批量绘图
 
@@ -217,7 +218,8 @@ void TankGameMenu::GameStart(int card)
 		{
 			NormalAITank *p=new NormalAITank();        //分配tank内存
 			gamemap.KillNormalTank();                  //减少剩余敌方坦克数量
-			p->Setxy(gamemap.CreatObjectXY());         //随机分配位置
+			random = rand();     //随机数
+			p->Setxy(gamemap.CreatObjectXY(random));         //随机分配位置
 			NormalTank.push_back(p);          //压入
 		}
 		
@@ -235,7 +237,8 @@ void TankGameMenu::GameStart(int card)
 			}
 			else
 			{
-				Dir movedir = (*NT)->NormalMoveAI();    //调用普通坦克移动ai
+				random = rand();  //随机数
+				Dir movedir = (*NT)->NormalMoveAI(random);    //调用普通坦克移动ai
 				Judgmentxy = (*NT)->Getxy();        //记录当前坦克坐标
 
 
@@ -360,6 +363,7 @@ void TankGameMenu::GameStart(int card)
 
 	//////////////////////////////////////////////////////////////////测试范围/////////////////////////////////////////////////////////
 }
+
 //游戏说明
 void TankGameMenu::Commeting()
 {
