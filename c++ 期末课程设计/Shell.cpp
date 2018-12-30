@@ -31,9 +31,7 @@ Shell::Shell(Dir facedir, COORD xy)
 
 Shell::~Shell()
 {
-	IMAGE img;
-	loadimage(&img, _T("Boom.jpg"));
-	putimage(XY.X, XY.Y, &img);
+
 }
 
 void Shell::Print()
@@ -87,4 +85,11 @@ void Shell::Fly()
 COORD Shell::GetXY()
 {
 	return XY;
+}
+
+void Shell::PrintShellBoom()
+{
+	IMAGE img;
+	loadimage(&img, _T("Boom.jpg"));
+	putimage(XY.X-10, XY.Y-10, &img);
 }

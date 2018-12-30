@@ -10,9 +10,8 @@ public:
 	COORD GetXY();     //获取炮弹方向
 	void Fly();
 	void Print();
+	void PrintShellBoom();
 private:
 	int Flag;
 };
 
-
-////////////////////////////类的实现//////////////////////////////

@@ -34,13 +34,13 @@ constexpr auto PI = 3.1415926535;         //用于旋转图片
 
 
 //游戏平衡数据
-const int SpeedLevel_1 = 10;   //移动速度
-const int SpeedLevel_2 = 15;
-const int SpeedLevel_3 = 30;
+const int SpeedLevel_1 = 5;   //移动速度
+const int SpeedLevel_2 = 10;
+const int SpeedLevel_3 = 15;
 
 const int IntervalLevel_1 = 15;  //攻击冷却时间
 const int IntervalLevel_2 = 10;
 const int IntervalLevel_3 = 7;
 
-const int ShellFlySpeed = 35;   //炮弹飞行速度
-const int GameSpeed = 40;       //游戏延迟30ms一帧
+const int ShellFlySpeed = 20;   //炮弹飞行速度
+const int GameSpeed = 5;       //游戏延迟30ms一帧

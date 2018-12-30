@@ -15,7 +15,7 @@ list<NormalAITank*> NormalTank;       //储存敌方坦克
 list<Shell*>::iterator PTS;           //玩家坦克的子弹
 list<Shell*>::iterator ETS;           //敌方坦克的子弹
 list<NormalAITank*>::iterator NT;     //敌方坦克
-list<NormalAITank*>::iterator _NT;     //敌方坦克
+list<NormalAITank*>::iterator _NT;     //敌方坦克（用于嵌套遍历查找坦克碰撞
 
 
 //画正方形
@@ -47,33 +47,17 @@ bool const JudgmentKill(COORD shellxy, COORD tankxy)
 
 }
 
-//判断是否跟坦克碰撞
-bool const JudgmentTankCollisoin(COORD Tankxy)
+//判断是否跟敌方坦克碰撞
+bool const JudgmentTankCollision(COORD Tankxy,COORD m_xy)
 {
 	for (_NT = NormalTank.begin(); _NT != NormalTank.end();_NT++)
 	{
 		COORD otherTank = (*_NT)->Getxy();
-		if (cor_cmp(otherTank, Tankxy))  //跳过自己
+		
+		if (cor_cmp(otherTank, m_xy))  //跳过自己
 			;
-		else if ((Tankxy.X >= otherTank.X
-			&&Tankxy.X <= otherTank.X + 59
-			&& Tankxy.Y >= otherTank.Y
-			&&Tankxy.Y <= otherTank.Y + 59)
-			
-			|| (Tankxy.X + 59 >=otherTank.X+1
-				&&Tankxy.X + 60 <= otherTank.X + 59
-				&& Tankxy.Y + 59 >= otherTank.Y+1
-				&&Tankxy.Y + 60 <= otherTank.Y + 59)
-			|| (Tankxy.X  >= otherTank.X+1
-				&&Tankxy.X  <=otherTank.X + 59
-				&& Tankxy.Y + 59 >= otherTank.Y+1
-				&&Tankxy.Y + 60 <= otherTank.Y + 59)
-			|| (Tankxy.X + 60 >= otherTank.X+1
-				&&Tankxy.X + 60 <= otherTank.X + 59
-				&& Tankxy.Y  >= otherTank.Y
-				&&Tankxy.Y  <= otherTank.Y + 59)
-				)
-
+		else if(Tankxy.X>otherTank.X-60&&Tankxy.X<otherTank.X+60
+			&& Tankxy.Y>otherTank.Y - 60 && Tankxy.Y < otherTank.Y + 60)
 		{
 			return 1;
 			break;
@@ -82,7 +66,29 @@ bool const JudgmentTankCollisoin(COORD Tankxy)
 	return 0;
 }
 
+//判断是否跟玩家坦克碰撞
+bool const JudgmentCollisionPlayer(COORD Tankxy,COORD player)
+{
+	if (Tankxy.X > player.X - 60 && Tankxy.X<player.X + 60
+		&& Tankxy.Y>player.Y - 60 && Tankxy.Y < player.Y + 60)
+		return 1;
+	return 0;
+}
 
+//判断玩家炮弹是否与敌方炮弹碰撞
+bool const JudgmentShellCollision(COORD shellxy)
+{
+	for (ETS = EnemyTankShell.begin(); ETS != EnemyTankShell.end();ETS++)
+		if (  (*ETS)->GetXY().X  > shellxy.X-10 && (*ETS)->GetXY().X< shellxy.X + 10
+			&& (*ETS)->GetXY().Y  > shellxy.Y - 10 && (*ETS)->GetXY().Y < shellxy.Y + 10
+			)
+		{
+			EnemyTankShell.erase(ETS);
+			return 1;
+				break;
+		}
+	return 0;
+}
 
 
 //++++++++++++++++++++++++++++++++++++++++++++主函数+++++++++++++++++++++++++++++++++++++++++++++//
@@ -140,6 +146,7 @@ int main()
 		//循环游戏过程
 		while (1)
 		{
+
 			//玩家按键操作响应
 			if (_kbhit())       //如果玩家有输入
 			{
@@ -177,12 +184,11 @@ int main()
 						&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y })
 						&& !gamemap.JudgmentBorder(Judgmentxy)                             //判断两角是否超界
 						&& !gamemap.JudgmentBorder({ Judgmentxy.X + 59,Judgmentxy.Y + 59 })
-						&&!JudgmentTankCollisoin(Judgmentxy))
+						&&!JudgmentTankCollision(Judgmentxy,player.Getxy()))
 						player.MoveTank((Dir)operation);      //移动坦克        这里将int型强制转换为Dir（方向）类型
 				}
 				//玩家操作
 			}
-
 
 			//生成敌方坦克	
 			if (gamemap.GetNumNormalTank() > 0 && NormalTank.size() < 3)   //场上少于3个敌方坦克且坦克还有剩余
@@ -247,7 +253,9 @@ int main()
 						&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y })
 						&& !gamemap.JudgmentBorder(Judgmentxy)                             //判断两角是否超界
 						&& !gamemap.JudgmentBorder({ Judgmentxy.X + 59,Judgmentxy.Y + 59 })
-						&&!JudgmentTankCollisoin(Judgmentxy))
+						&&!JudgmentTankCollision(Judgmentxy,(*NT)->Getxy())    //判断是否跟敌方坦克碰撞
+						&&!JudgmentCollisionPlayer(Judgmentxy,player.Getxy())  //判断是否跟玩家坦克相撞
+						)        
 						(*NT)->MoveTank(movedir);      //移动敌方普通坦克        
 
 					(*NT)->Print();         //打印坦克
@@ -281,10 +289,17 @@ int main()
 				if (!gamemap.GetShellAdmit((*PTS)->GetXY()))			          //判断是否打到地形
 				{
 					gamemap.ChangeMap((*PTS)->GetXY()); //修改地图（减少墙体耐久
+					(*PTS)->PrintShellBoom();
 					PTS = PlayerTankShell.erase(PTS);	//命中删除并释放内存
+				}
+				else if (JudgmentShellCollision((*PTS)->GetXY()))         //炮弹对撞
+				{
+					(*PTS)->PrintShellBoom();
+					PTS = PlayerTankShell.erase(PTS);	//删除并释放内存
 				}
 				else if (gamemap.JudgmentBorder((*PTS)->GetXY()) || flag)          //炮弹超界或击杀
 				{
+					(*PTS)->PrintShellBoom();
 					PTS = PlayerTankShell.erase(PTS);	//删除并释放内存
 				}
 				else             //处理下一棵炮弹
@@ -353,3 +368,14 @@ int main()
 
 	return 0;
 }
+
+
+//buff类
+//信息版类
+
+//爆炸效果实现
+//精英坦克实装
+//第二张地图
+
+//炮弹碰撞bug
+//敌方生成卡位bug
