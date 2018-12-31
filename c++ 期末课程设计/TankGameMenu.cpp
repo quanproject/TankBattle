@@ -151,6 +151,7 @@ void TankGameMenu::GameOver()
 	settextcolor(GREEN);        //未选择的字体颜色
 	outtextxy(ox+400, ox + 250, _T("退 出 游 戏"));
 
+	Sleep(1000);
 	int dir;                        //菜单选择方向，左和右
 	int flag = 1;                   //确定选择
 	while (1)

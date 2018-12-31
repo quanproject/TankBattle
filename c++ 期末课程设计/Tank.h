@@ -20,7 +20,7 @@ public:
 	const COORD Getxy() {return XY; }                                        //获取坦克位置
 	const int GetSpeed() { return Speed; }                                   //获取坦克速度
 	const Dir GetDir() { return Direction; }                                 //获取坦克方向
-//	const int GetFireInterval() {return  FireInterval;}                      //获取攻击间隔
+	const int GetFireInterval() {return  FireInterval;}                      //获取攻击间隔
 	bool GetReadyForFire() { return ReadyForFire; }                    //获取坦克能否开炮的状态
 	const int GetHP() { return Hp; }                                         //获取坦克血量
 	const void TankBoom();                                                    //坦克爆炸图片
@@ -47,6 +47,10 @@ public:
 	void MoveTank(Dir newdir);  //移动由玩家操作
 	void Fire();                //由玩家控制开火
 	void HomeKill() { Hp = 0; };  //家爆炸
+	void JudgmentBuff();          //检查并修改当前坦克的buff状态
+	const bool GetBuff() { return CompleteTank; }         //获取当前buff状态
+private:
+	bool CompleteTank;         //状态全满与否
 };
 
 //普通ai坦克类(速度，攻速，血量变化

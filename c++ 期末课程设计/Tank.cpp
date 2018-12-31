@@ -51,6 +51,7 @@ PlayTank::PlayTank()
 	FireInterval = IntervalLevel_1; //初始攻击间隔
 	RectSphere = 60;                //坦克大小60x60像素
 	nowInterval = FireInterval;  //初始化冷却时间
+	CompleteTank = 0;             //初始buff状态
 }
 
 void PlayTank::Fire()
@@ -110,6 +111,13 @@ void PlayTank::Print()
 		putimage(XY.X, XY.Y, &img2);
 
 	}
+}
+
+void PlayTank::JudgmentBuff()
+{
+	if (Speed == SpeedLevel_3 && Hp == 3 && FireInterval == IntervalLevel_3)
+		CompleteTank= 1;
+	CompleteTank= 0;
 }
 
 /////////////////////////////////////普通敌方坦克//////////////////////////

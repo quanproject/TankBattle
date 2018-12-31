@@ -5,20 +5,20 @@
 #include"Terrain.h"        //地形类
 using namespace std;
 
-//容器
 list<Shell*> PlayerTankShell;         //存储玩家坦克的子弹 
 list<Shell*> EnemyTankShell;          //储存敌方坦克的子弹
 list<NormalAITank*> NormalTank;       //储存普通敌方坦克
 list<BossAITank*>BossTank;            //储存精英敌方坦克
+list<Buff*>AllBuff;                   //储存buff
 
 
-//迭代器
 list<Shell*>::iterator PTS;           //玩家坦克的子弹
 list<Shell*>::iterator ETS;           //敌方坦克的子弹
 list<NormalAITank*>::iterator NT;     //普通敌方坦克
 list<NormalAITank*>::iterator _NT;     //普通敌方坦克（用于嵌套遍历查找坦克碰撞
 list<BossAITank*>::iterator BT;       //精英敌方坦克
 list<BossAITank*>::iterator _BT;
+list<Buff*>::iterator Bf;              //buff
 
 //画正方形
 void const drawdre(COORD x)
@@ -78,18 +78,34 @@ bool const JudgmentCollisionPlayer(COORD Tankxy,COORD player)
 }
 
 //判断玩家炮弹是否与敌方炮弹碰撞
-bool const JudgmentShellCollision(COORD shellxy)
+bool const JudgmentShellCollision(COORD shellxy,Dir shelldir)
 {
-	for (ETS = EnemyTankShell.begin(); ETS != EnemyTankShell.end();ETS++)
-		if (  (*ETS)->GetXY().X  > shellxy.X-10 && (*ETS)->GetXY().X< shellxy.X + 10
-			&& (*ETS)->GetXY().Y  > shellxy.Y - 10 && (*ETS)->GetXY().Y < shellxy.Y + 10
-			)
-		{
-			EnemyTankShell.erase(ETS);
-			return 1;
+	if (shelldir == UP || shelldir == DOWN)
+	{
+		for (ETS = EnemyTankShell.begin(); ETS != EnemyTankShell.end(); ETS++)  //遍历敌方炮弹
+			if ((*ETS)->GetXY().X > shellxy.X - 10 && (*ETS)->GetXY().X< shellxy.X + 10
+				&& (*ETS)->GetXY().Y  > shellxy.Y - 10- ShellFlySpeed && (*ETS)->GetXY().Y < shellxy.Y + 10+ ShellFlySpeed       
+				)                       // ShellFlySpeed 防止炮弹速度过快而无法相撞
+			{
+				EnemyTankShell.erase(ETS);         //释放敌方炮弹
+				return 1;
 				break;
-		}
-	return 0;
+			}
+		return 0;
+	}
+	else  //左右碰撞
+	{
+		for (ETS = EnemyTankShell.begin(); ETS != EnemyTankShell.end(); ETS++)  //遍历敌方炮弹
+			if ((*ETS)->GetXY().X > shellxy.X - 10 - ShellFlySpeed && (*ETS)->GetXY().X< shellxy.X + 10 + ShellFlySpeed
+				&& (*ETS)->GetXY().Y  > shellxy.Y - 10 && (*ETS)->GetXY().Y < shellxy.Y + 10
+				)
+			{
+				EnemyTankShell.erase(ETS);         //释放敌方炮弹
+				return 1;
+				break;
+			}
+		return 0;
+	}
 }
 
 
@@ -120,9 +136,11 @@ int main()
 
 
 
+
 	while (card<5)  //最多做五关（
 	{
 		PlayTank player;                    //定义玩家坦克
+		int time = 0;                          //时间标值，用于生成buff
 		player.Setxy({ 14 * GAMESIZE,24 * GAMESIZE });              //定位玩家初始坐标
 		//根据选择生成不同的关
 		if (card == 1)
@@ -148,6 +166,8 @@ int main()
 		//循环游戏过程
 		while (1)
 		{
+
+			time++;
 
 			//玩家按键操作响应
 			if (_kbhit())       //如果玩家有输入
@@ -212,10 +232,56 @@ int main()
 				BossTank.push_back(p);          //压入
 			}
 
+			//生成buff
+			if (AllBuff.empty() && time > 100 &&!player.GetBuff())  //场上没有buff   10s之后    玩家buff没有全满
+			{
+				int buff_chose=0;   //0 继续随机选择生成的buff  1 hp     2 speed     3 fire
+				do {
+					random = rand() % 3;  //随机
+					switch (random)
+					{
+					case 0:  if (player.GetHP() < 3) buff_chose = 1; break;
+					case 1:  if (player.GetSpeed() != SpeedLevel_3) buff_chose = 2; break;
+					case 2:  if (player.GetFireInterval() != IntervalLevel_3) buff_chose = 3; break;
+					}
+				} while (!buff_chose);  //没找到就继续循环
+
+				time = 0;                 //重置buff生成时间
+				Buff *p=NULL;                  //指针
+
+					if (buff_chose == 1)
+						p = new HPBuff();
+					else if (buff_chose == 2)
+						p = new MoveSpeedBuff();
+					else//buff_chose=3
+						p = new FireIntervalBuff();
+
+					random = rand();     //随机数
+					p->Setxy(gamemap.CreatObjectXY(random));         //随机分配位置
+					AllBuff.push_back(p);          //压入
+			}
+
+
+
 			///////////////////////////////////打印环节//////////////////////////////////////
 			loadimage(NULL, _T("Floor.jpg"));          //背景地图
 			gamemap.PrintMap_2();   //画地图Map类（根据card确定map  坦克下方
 			player.Print();  //打印玩家坦克
+
+			//操作一下buff
+			for (Bf = AllBuff.begin(); Bf != AllBuff.end();)
+			{
+				(*Bf)->Print();
+
+				if (JudgmentCollisionPlayer((*Bf)->Getxy(), player.Getxy()))
+				{
+					(*Bf)->BuffEffect(player);       //buff效果
+					player.JudgmentBuff();         //检查一下坦克buff
+					Bf = AllBuff.erase(Bf);    //释放内存
+				}
+				else
+					Bf++;
+			}
 
 			 //对所有普通敌方坦克操作（判断存活，开火，移动，打印
 			for (NT = NormalTank.begin(); NT != NormalTank.end();)
@@ -339,7 +405,6 @@ int main()
 				}
 			}
 			
-			
 			gamemap.PrintMap_1();  //画地图Map类（根据card确定map   坦克上方
 
 
@@ -370,7 +435,7 @@ int main()
 					(*PTS)->PrintShellBoom();          //爆炸特效
 					PTS = PlayerTankShell.erase(PTS);	//命中删除并释放内存
 				}
-				else if (JudgmentShellCollision((*PTS)->GetXY()))         //炮弹对撞
+				else if (JudgmentShellCollision((*PTS)->GetXY(),(*PTS)->GetDir()))         //炮弹对撞
 				{
 					(*PTS)->PrintShellBoom();          //爆炸特效
 					PTS = PlayerTankShell.erase(PTS);	//删除并释放内存
@@ -419,29 +484,27 @@ int main()
 					++ETS;
 			}
 
+
+
 			player.FireIntevalFigure();          //计算玩家开火冷却缩减
 			for (NT = NormalTank.begin(); NT != NormalTank.end(); NT++)
 				(*NT)->FireIntevalFigure();      //计算敌方普通坦克炮弹冷却
 			for (BT = BossTank.begin(); BT != BossTank.end(); BT++)
 				(*BT)->FireIntevalFigure();      //计算敌方精英坦克炮弹冷却
 
-			//玩家生存状况（跳出
-			if (player.GetHP() == 0)  //玩家生命值归零
-			{
-				player.TankBoom();
-				Sleep(1000);
+
+
+
+			//跳出
+			if (player.GetHP() == 0 || BossTank.size() + NormalTank.size()==0)  //玩家生命值归零||敌方坦克全部死亡
 				break;
-			}
-			//通关判定（跳出并调用下一关
 
 			FlushBatchDraw();  //批量绘图
 			Sleep(GameSpeed); //游戏延迟
 	//		cleardevice();    //清除屏幕
 		}
 		EndBatchDraw();         //结束批量绘图
-
 		gamemap.CloseMap();     //释放地图内存
-
 		PlayerTankShell.clear();  //清空所有容器
 		EnemyTankShell.clear();
 		NormalTank.clear();
@@ -450,7 +513,10 @@ int main()
 
 		//根据血量判断
 		if (player.GetHP() == 0)
+		{
+			Sleep(3000);       //冷静一下
 			GAME.GameOver();    //重新开始/退出
+		}
 		else
 			card++;     //进入下一关
 	}
@@ -463,12 +529,13 @@ int main()
 }
 
 
-//buff类
+//buff类   ok
 //信息版类
+//游戏说明
 
-//爆炸效果实现
-//精英坦克实装
+//爆炸效果实现        ok
+//精英坦克实装        ok
 //第二张地图
 
-//炮弹碰撞bug
+//炮弹碰撞bug        ok
 //敌方生成卡位bug
