@@ -23,6 +23,12 @@ void Tank:: ChangeHp(int flag)
 		Hp--;
 }
 
+const void Tank::TankBoom()
+{
+	IMAGE img;
+	loadimage(&img, _T("Boom.jpg"));
+	putimage(XY.X , XY.Y , &img);
+}
 
 void Tank::FireIntevalFigure()
 {
@@ -38,8 +44,8 @@ void Tank::FireIntevalFigure()
 //////////////////////////////////////玩家tank////////////////////////////////
 PlayTank::PlayTank()
 {
-	Speed = SpeedLevel_3;           //初始速度
-	Hp = 1;                         //初始生命
+	Speed = SpeedLevel_1;           //初始速度
+	Hp = 2;                         //初始生命
 	Direction = UP;                 //初始方向
 	ReadyForFire = 1;               //开局装弹
 	FireInterval = IntervalLevel_1; //初始攻击间隔
@@ -110,8 +116,8 @@ void PlayTank::Print()
 NormalAITank::NormalAITank()
 {
 	Speed = SpeedLevel_1;           //初始速度
-	Hp = 1;                         //初始生命
-	Direction = UP;                 //初始方向
+	Hp = 2;                         //初始生命
+	Direction = DOWN;                 //初始方向
 	ReadyForFire = 0;               //开局装弹
 	FireInterval = IntervalLevel_1; //初始攻击间隔
 	RectSphere = 60;                //坦克大小60x60像素
@@ -166,7 +172,7 @@ Dir NormalAITank::NormalMoveAI(int h)
 	else if (n < 14)
 		return LEFT;
 	else
-		return DOWN;
+		return RIGHT;
 }
 
 void NormalAITank::MoveTank(Dir NewDir)
@@ -241,5 +247,52 @@ void BossAITank::Print()
 
 		putimage(XY.X, XY.Y, &img2);
 
+	}
+}
+
+Dir BossAITank::BossMoveAI(int h)
+{
+	int n = h % 15;
+	if (XY.Y < 400)       //在地图上半部分
+	{
+		if (n < 8)
+			return Direction;  //大多情况下保持原方向不变
+		else if (n < 12)
+			return DOWN;        //更趋于向下走
+		else if (n < 13)
+			return LEFT;
+		else
+			return RIGHT;
+	}
+	else
+	{
+		if (n < 11)
+			return Direction;  //大多情况下保持原方向不变
+		else if (n < 12)
+			return UP;         //任意方向走
+		else if (n < 13)
+			return DOWN;
+		else if (n < 14)
+			return LEFT;
+		else
+			return RIGHT;
+	}
+}
+
+void BossAITank::MoveTank(Dir NewDir)
+{
+	switch (NewDir) {    //按照移动速度移动
+	case UP:
+		XY.Y -= Speed;  //修改坐标
+		break;
+	case DOWN:
+		XY.Y += Speed;
+		break;
+	case LEFT:
+		XY.X -= Speed;
+		break;
+	case RIGHT:
+		XY.X += Speed;
+		break;
 	}
 }

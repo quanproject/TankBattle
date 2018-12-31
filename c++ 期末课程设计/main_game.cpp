@@ -8,15 +8,17 @@ using namespace std;
 //容器
 list<Shell*> PlayerTankShell;         //存储玩家坦克的子弹 
 list<Shell*> EnemyTankShell;          //储存敌方坦克的子弹
-list<NormalAITank*> NormalTank;       //储存敌方坦克
+list<NormalAITank*> NormalTank;       //储存普通敌方坦克
+list<BossAITank*>BossTank;            //储存精英敌方坦克
 
 
 //迭代器
 list<Shell*>::iterator PTS;           //玩家坦克的子弹
 list<Shell*>::iterator ETS;           //敌方坦克的子弹
-list<NormalAITank*>::iterator NT;     //敌方坦克
-list<NormalAITank*>::iterator _NT;     //敌方坦克（用于嵌套遍历查找坦克碰撞
-
+list<NormalAITank*>::iterator NT;     //普通敌方坦克
+list<NormalAITank*>::iterator _NT;     //普通敌方坦克（用于嵌套遍历查找坦克碰撞
+list<BossAITank*>::iterator BT;       //精英敌方坦克
+list<BossAITank*>::iterator _BT;
 
 //画正方形
 void const drawdre(COORD x)
@@ -190,7 +192,7 @@ int main()
 				//玩家操作
 			}
 
-			//生成敌方坦克	
+			//生成敌方普通坦克	
 			if (gamemap.GetNumNormalTank() > 0 && NormalTank.size() < 3)   //场上少于3个敌方坦克且坦克还有剩余
 			{
 				NormalAITank *p = new NormalAITank();        //分配tank内存
@@ -200,16 +202,27 @@ int main()
 				NormalTank.push_back(p);          //压入
 			}
 
+			//生成敌方精英坦克
+			if (gamemap.GetNumBossTank() > 0 && gamemap.GetNumNormalTank() < 3 && BossTank.size() < 1)  //有剩余，普通坦克剩余3，精英少于1
+			{
+				BossAITank *p = new BossAITank();        //分配tank内存
+				gamemap.KillBossTank();                  //减少剩余敌方坦克数量
+				random = rand();     //随机数
+				p->Setxy(gamemap.CreatObjectXY(random));         //随机分配位置
+				BossTank.push_back(p);          //压入
+			}
+
 			///////////////////////////////////打印环节//////////////////////////////////////
 			loadimage(NULL, _T("Floor.jpg"));          //背景地图
 			gamemap.PrintMap_2();   //画地图Map类（根据card确定map  坦克下方
 			player.Print();  //打印玩家坦克
 
-			 //对所有普通敌方坦克操作（开火，移动，打印
+			 //对所有普通敌方坦克操作（判断存活，开火，移动，打印
 			for (NT = NormalTank.begin(); NT != NormalTank.end();)
 			{
 				if ((*NT)->GetHP() == 0)        //判断是否死亡
 				{
+					(*NT)->TankBoom();
 					NT = NormalTank.erase(NT);       //释放敌方坦克内存
 				}
 				else
@@ -264,10 +277,75 @@ int main()
 					++NT;           //对下一个坦克操作
 				}
 			}
+			
+			//对所有精英敌方坦克操作
+			for (BT = BossTank.begin(); BT != BossTank.end();)
+			{
+				if ((*BT)->GetHP() == 0)        //判断是否死亡
+				{
+					(*BT)->TankBoom();
+					BT = BossTank.erase(BT);       //释放敌方坦克内存
+				}
+				else
+				{
+					random = rand();  //随机数
+					Dir movedir = (*BT)->BossMoveAI(random);    //调用普通坦克移动ai
+					Judgmentxy = (*BT)->Getxy();        //记录当前坦克坐标
+
+
+					//开火判断（好了就打
+					if ((*BT)->GetReadyForFire())
+					{
+						(*BT)->ChangeReadyForFire(0);     //冷却
+						Shell *p = new Shell(movedir, Judgmentxy);   //申请新内存
+						p->Print();
+						EnemyTankShell.push_back(p);                       //压入炮弹容器
+					}
+
+
+
+					//修改坦克朝向
+					(*BT)->ChangeDir(movedir);
+					switch (movedir) {
+					case UP:
+						Judgmentxy.Y -= SpeedLevel_3;
+						break;
+					case DOWN:
+						Judgmentxy.Y += SpeedLevel_3;
+						break;
+					case LEFT:
+						Judgmentxy.X -= SpeedLevel_3;
+						break;
+					case RIGHT:
+						Judgmentxy.X += SpeedLevel_3;
+						break;
+					}
+
+					if (gamemap.GetTankAdmit(Judgmentxy)                                  //判断四角是否与地形碰撞
+						&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y + 59 })
+						&& gamemap.GetTankAdmit({ Judgmentxy.X ,Judgmentxy.Y + 59 })
+						&& gamemap.GetTankAdmit({ Judgmentxy.X + 59,Judgmentxy.Y })
+						&& !gamemap.JudgmentBorder(Judgmentxy)                             //判断两角是否超界
+						&& !gamemap.JudgmentBorder({ Judgmentxy.X + 59,Judgmentxy.Y + 59 })
+						&& !JudgmentTankCollision(Judgmentxy, (*BT)->Getxy())    //判断是否跟敌方坦克碰撞
+						&& !JudgmentCollisionPlayer(Judgmentxy, player.Getxy())  //判断是否跟玩家坦克相撞
+						)
+						(*BT)->MoveTank(movedir);      //移动敌方精英坦克        
+
+					(*BT)->Print();         //打印坦克
+
+
+					++BT;           //对下一个坦克操作
+				}
+			}
+			
+			
 			gamemap.PrintMap_1();  //画地图Map类（根据card确定map   坦克上方
 
 
-			//迭代器遍历对玩家炮弹操作
+
+
+			//遍历对玩家炮弹操作
 			for (PTS = PlayerTankShell.begin(); PTS != PlayerTankShell.end();)
 			{
 
@@ -289,17 +367,17 @@ int main()
 				if (!gamemap.GetShellAdmit((*PTS)->GetXY()))			          //判断是否打到地形
 				{
 					gamemap.ChangeMap((*PTS)->GetXY()); //修改地图（减少墙体耐久
-					(*PTS)->PrintShellBoom();
+					(*PTS)->PrintShellBoom();          //爆炸特效
 					PTS = PlayerTankShell.erase(PTS);	//命中删除并释放内存
 				}
 				else if (JudgmentShellCollision((*PTS)->GetXY()))         //炮弹对撞
 				{
-					(*PTS)->PrintShellBoom();
+					(*PTS)->PrintShellBoom();          //爆炸特效
 					PTS = PlayerTankShell.erase(PTS);	//删除并释放内存
 				}
 				else if (gamemap.JudgmentBorder((*PTS)->GetXY()) || flag)          //炮弹超界或击杀
 				{
-					(*PTS)->PrintShellBoom();
+					(*PTS)->PrintShellBoom();          //爆炸特效
 					PTS = PlayerTankShell.erase(PTS);	//删除并释放内存
 				}
 				else             //处理下一棵炮弹
@@ -308,7 +386,7 @@ int main()
 				}
 			}
 
-			//迭代器遍历对敌方炮弹操作
+			//遍历对敌方炮弹操作
 			for (ETS = EnemyTankShell.begin(); ETS != EnemyTankShell.end();)
 			{
 
@@ -318,16 +396,24 @@ int main()
 				if (!gamemap.GetShellAdmit((*ETS)->GetXY()))			          //判断是否打到地形
 				{
 					gamemap.ChangeMap((*ETS)->GetXY()); //修改地图（减少墙体耐久
+					(*ETS)->PrintShellBoom();          //爆炸特效
 					ETS = EnemyTankShell.erase(ETS);	//命中删除并释放内存
 				}
 				else if (gamemap.JudgmentBorder((*ETS)->GetXY()))          //炮弹超界
 				{
-
+					(*ETS)->PrintShellBoom();          //爆炸特效
+					ETS = EnemyTankShell.erase(ETS);	//释放内存
 				}
 				else if (JudgmentKill((*ETS)->GetXY(), player.Getxy()))      //命中玩家
 				{
 					player.ChangeHp(0);      //失去HP
+					(*ETS)->PrintShellBoom();          //爆炸特效
 					ETS = EnemyTankShell.erase(ETS);	//删除并释放内存
+				}
+				else if (JudgmentKill((*ETS)->GetXY(), { 570,720 }))  //命中home
+				{
+					(*ETS)->PrintShellBoom();          //爆炸特效
+					player.HomeKill();  //血量归零
 				}
 				else             //处理下一棵炮弹
 					++ETS;
@@ -335,12 +421,17 @@ int main()
 
 			player.FireIntevalFigure();          //计算玩家开火冷却缩减
 			for (NT = NormalTank.begin(); NT != NormalTank.end(); NT++)
-				(*NT)->FireIntevalFigure();      //计算敌方炮弹冷却
+				(*NT)->FireIntevalFigure();      //计算敌方普通坦克炮弹冷却
+			for (BT = BossTank.begin(); BT != BossTank.end(); BT++)
+				(*BT)->FireIntevalFigure();      //计算敌方精英坦克炮弹冷却
 
 			//玩家生存状况（跳出
 			if (player.GetHP() == 0)  //玩家生命值归零
+			{
+				player.TankBoom();
+				Sleep(1000);
 				break;
-
+			}
 			//通关判定（跳出并调用下一关
 
 			FlushBatchDraw();  //批量绘图
@@ -348,11 +439,13 @@ int main()
 	//		cleardevice();    //清除屏幕
 		}
 		EndBatchDraw();         //结束批量绘图
+
 		gamemap.CloseMap();     //释放地图内存
+
 		PlayerTankShell.clear();  //清空所有容器
 		EnemyTankShell.clear();
 		NormalTank.clear();
-
+		BossTank.clear();
 
 
 		//根据血量判断

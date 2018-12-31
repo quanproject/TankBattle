@@ -1,15 +1,13 @@
 #pragma once
 #include"main_game.h"
+#include"Object.h"
 //=============================增益类===============================//
-class Buff
+class Buff:public Object
 {
 public:
 	Buff();
 	~Buff();
-	void CreatBuff();                      //生成buff
-	void GetBuff();                        //获得buff
 	virtual void BuffEffect()=0;           //buff效果
-	virtual const void PrintBuff() = 0;    //打印buf
 };
 
 class MoveSpeedBuff:public Buff
@@ -28,4 +26,5 @@ class HPBuff :public Buff
 {
 public:
 	void BuffEffect();
+	void Print();
 };
