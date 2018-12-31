@@ -36,6 +36,9 @@
     <ClCompile Include="Shell.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MessageBoard.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tank.h">
@@ -60,6 +63,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBoard.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

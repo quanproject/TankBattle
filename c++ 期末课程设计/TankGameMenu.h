@@ -10,6 +10,7 @@ public:
 	void Inaugurated();                 //刷屏动画
 	void Commeting();                   //游戏说明
 	void GameOver();                     //玩家死亡
+	void GameWin();                      //通过一关
 	TankGameMenu();
 	~TankGameMenu();
 private:

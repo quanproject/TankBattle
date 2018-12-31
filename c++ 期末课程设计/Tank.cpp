@@ -80,7 +80,10 @@ void PlayTank::MoveTank(Dir NewDir)
 void PlayTank::Print()
 {
 	IMAGE img1,img2;
-	loadimage(&img1, _T("PlayerTank.jpg")); //读取照片 （像素为60x60）
+	if(Hp>=2)
+		loadimage(&img1, _T("PlayerTank.jpg")); //读取完好照片 （像素为60x60）
+	else
+		loadimage(&img1, _T("PlayerTank_1.jpg")); //读取残破照片 （像素为60x60）
 
      //根据方向和位置打印坦克
 	if (Direction == UP)
@@ -126,7 +129,7 @@ NormalAITank::NormalAITank()
 	Speed = SpeedLevel_1;           //初始速度
 	Hp = 2;                         //初始生命
 	Direction = DOWN;                 //初始方向
-	ReadyForFire = 0;               //开局装弹
+	ReadyForFire = 0;               //开局未装弹
 	FireInterval = IntervalLevel_1; //初始攻击间隔
 	RectSphere = 60;                //坦克大小60x60像素
 }
@@ -134,7 +137,11 @@ NormalAITank::NormalAITank()
 void NormalAITank::Print()
 {
 	IMAGE img1, img2;
-	loadimage(&img1, _T("NormalTank.jpg")); //读取照片 （像素为60x60）
+
+	if(Hp==2)
+		loadimage(&img1, _T("NormalTank.jpg")); //读取照片 （像素为60x60）
+	else
+		loadimage(&img1, _T("NormalTank_1.jpg")); //读取照片 （像素为60x60）
 
 	 //根据方向和位置打印坦克
 	if (Direction == UP)
@@ -217,7 +224,7 @@ BossAITank::BossAITank()
 	Speed = SpeedLevel_3;           //初始速度
 	Hp = 3;                         //初始生命
 	Direction = UP;                 //初始方向
-	ReadyForFire = 1;               //开局装弹
+	ReadyForFire = 0;               //开局未装弹
 	FireInterval = IntervalLevel_3; //初始攻击间隔
 	RectSphere = 60;                //坦克大小60x60像素
 }
@@ -225,7 +232,12 @@ BossAITank::BossAITank()
 void BossAITank::Print()
 {
 	IMAGE img1, img2;
+	if(Hp==3)
 	loadimage(&img1, _T("BossTank.jpg")); //读取照片 （像素为60x60）
+	else if(Hp==2)
+		loadimage(&img1, _T("BossTank_1.jpg")); //读取照片 （像素为60x60）
+	else
+		loadimage(&img1, _T("BossTank_2.jpg")); //读取照片 （像素为60x60）
 
 	 //根据方向和位置打印坦克
 	if (Direction == UP)

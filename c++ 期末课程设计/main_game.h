@@ -34,7 +34,7 @@ constexpr auto PI = 3.1415926535;         //用于旋转图片
 
 
 //游戏平衡数据
-const int SpeedLevel_1 = 5;   //移动速度
+const int SpeedLevel_1 = 6;   //移动速度
 const int SpeedLevel_2 = 10;
 const int SpeedLevel_3 = 15;
 

@@ -3,6 +3,7 @@
 #include"Tank.h"           //坦克类
 #include"TankGameMenu.h"   //游戏菜单类
 #include"Terrain.h"        //地形类
+#include"MessageBoard.h"   //信息板类
 using namespace std;
 
 list<Shell*> PlayerTankShell;         //存储玩家坦克的子弹 
@@ -139,9 +140,11 @@ int main()
 
 	while (card<5)  //最多做五关（
 	{
-		PlayTank player;                    //定义玩家坦克
+		PlayTank player;                       //定义玩家坦克
+		MessageBoard messageboard;             //定义信息板
 		int time = 0;                          //时间标值，用于生成buff
 		player.Setxy({ 14 * GAMESIZE,24 * GAMESIZE });              //定位玩家初始坐标
+		messageboard.ChangeCard(card);                              // 信息板录入关卡
 		//根据选择生成不同的关
 		if (card == 1)
 		{
@@ -150,6 +153,7 @@ int main()
 			loadimage(NULL, _T("Floor.jpg"));          //背景地图
 			gamemap.PrintMap_1();
 			gamemap.PrintMap_2();			
+			messageboard.Print();
 			Sleep(1000);
 			//画标题，做为入场
 			IMAGE img1;
@@ -273,12 +277,14 @@ int main()
 			{
 				(*Bf)->Print();
 
-				if (JudgmentCollisionPlayer((*Bf)->Getxy(), player.Getxy()))
+				if (JudgmentCollisionPlayer((*Bf)->Getxy(), player.Getxy())) //被玩家获取
 				{
 					(*Bf)->BuffEffect(player);       //buff效果
 					player.JudgmentBuff();         //检查一下坦克buff
 					Bf = AllBuff.erase(Bf);    //释放内存
 				}
+				else if(time>3000)                        //超时消失
+					Bf = AllBuff.erase(Bf);    //释放内存
 				else
 					Bf++;
 			}
@@ -493,11 +499,12 @@ int main()
 				(*BT)->FireIntevalFigure();      //计算敌方精英坦克炮弹冷却
 
 
-
-
+			messageboard.ChangeTankMessage(player); //录入玩家坦克状态
+			messageboard.Print();               //打印信息板
 			//跳出
 			if (player.GetHP() == 0 || BossTank.size() + NormalTank.size()==0)  //玩家生命值归零||敌方坦克全部死亡
 				break;
+
 
 			FlushBatchDraw();  //批量绘图
 			Sleep(GameSpeed); //游戏延迟
@@ -514,11 +521,14 @@ int main()
 		//根据血量判断
 		if (player.GetHP() == 0)
 		{
-			Sleep(3000);       //冷静一下
+			Sleep(2000);       //冷静一下
 			GAME.GameOver();    //重新开始/退出
 		}
 		else
+		{
+			GAME.GameWin();
 			card++;     //进入下一关
+		}
 	}
 
 
@@ -530,8 +540,9 @@ int main()
 
 
 //buff类   ok
-//信息版类
-//游戏说明
+//信息版类 ok
+//游戏说明 ok
+//游戏胜利界面  ok
 
 //爆炸效果实现        ok
 //精英坦克实装        ok

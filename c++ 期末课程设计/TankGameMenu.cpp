@@ -15,9 +15,10 @@ TankGameMenu::~TankGameMenu()
 void TankGameMenu::printTankGameMenu()
 {
 	initgraph(1200, 900);              //初始化图形界面
+	loadimage(NULL, _T("GameMenu.jpg"));  //加载背景图片
+
 	setbkcolor(BLACK);              //设置字体背景颜色
 	setfillcolor(BLACK);            //设置初始背景颜色
-	solidrectangle(0,0,1200,900);      //画出背景色
 	settextstyle(40, 0, _T("黑体"));   //设置文字格式各个参数
 
 	int const ox = 500;          //标注位置的常量
@@ -125,13 +126,19 @@ void TankGameMenu::Inaugurated()
 void TankGameMenu::Commeting()
 {
 	//打印一张图片
-	loadimage(NULL, _T("说明图片"));
+	loadimage(NULL, _T("Commeting.jpg"));
 	//按k返回
 	int flag;     //判断输入
-	if (_kbhit())
-		flag=_getch();
-	if (flag == ACT)
-		printTankGameMenu(); //返回选择菜单
+	while (1)
+	{
+		if (_kbhit())
+		{
+			flag = _getch();
+			if (flag == ACT)
+				break;
+		}
+	}
+	printTankGameMenu(); //返回选择菜单
 }
 
 void TankGameMenu::GameOver()
@@ -187,4 +194,14 @@ void TankGameMenu::GameOver()
 	else
 		Inaugurated();
 		exit(1); //退出游戏
+}
+
+void TankGameMenu::GameWin()
+{
+	IMAGE img1;
+
+	loadimage(&img1, _T("GameWin.jpg")); //读取照片 （像素为60x60）
+
+	putimage(0, 300, &img1);
+	Sleep(3000);
 }
