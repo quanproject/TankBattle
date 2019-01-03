@@ -55,9 +55,9 @@ const void MessageBoard::Print()
 	//´òÓ¡»ðÁ¦
 	if (FireInterval == IntervalLevel_1)
 		outtextxy(300, 855, _T("Level 1"));
-	else if (FireInterval == IntervalLevel_1)
+	else if (FireInterval == IntervalLevel_2)
 		outtextxy(300, 855, _T("Level 2"));
-	else if (FireInterval == IntervalLevel_1)
+	else if (FireInterval == IntervalLevel_3)
 		outtextxy(300, 855, _T("Level 3"));
 	else;
 

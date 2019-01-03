@@ -240,15 +240,17 @@ int main()
 			if (AllBuff.empty() && time > 100 &&!player.GetBuff())  //场上没有buff   10s之后    玩家buff没有全满
 			{
 				int buff_chose=0;   //0 继续随机选择生成的buff  1 hp     2 speed     3 fire
+				int times=0;
 				do {
 					random = rand() % 3;  //随机
+					times++;
 					switch (random)
 					{
 					case 0:  if (player.GetHP() < 3) buff_chose = 1; break;
 					case 1:  if (player.GetSpeed() != SpeedLevel_3) buff_chose = 2; break;
 					case 2:  if (player.GetFireInterval() != IntervalLevel_3) buff_chose = 3; break;
 					}
-				} while (!buff_chose);  //没找到就继续循环
+				} while (!buff_chose&&times<5);  //没找到就继续循环(最多循环五次
 
 				time = 0;                 //重置buff生成时间
 				Buff *p=NULL;                  //指针
@@ -281,6 +283,7 @@ int main()
 				{
 					(*Bf)->BuffEffect(player);       //buff效果
 					player.JudgmentBuff();         //检查一下坦克buff
+					time = 0;
 					Bf = AllBuff.erase(Bf);    //释放内存
 				}
 				else if(time>3000)                        //超时消失
@@ -425,11 +428,21 @@ int main()
 				COORD Shellxy = (*PTS)->GetXY();  //记录炮弹坐标
 				bool flag = 0;        //是否命中敌方坦克的标志
 
-				for (NT = NormalTank.begin(); NT != NormalTank.end(); NT++)      //遍历坦克来确认有没有命中
+				for (NT = NormalTank.begin(); NT != NormalTank.end(); NT++)      //遍历普通坦克来确认有没有命中
 				{
 					if (JudgmentKill(Shellxy, (*NT)->Getxy()))  //命中
 					{
 						(*NT)->ChangeHp(0);              //减少HP
+						flag = 1;
+						break;
+					}
+				}
+
+				for (BT = BossTank.begin(); BT != BossTank.end(); BT++)      //遍历精英坦克来确认有没有命中
+				{
+					if (JudgmentKill(Shellxy, (*BT)->Getxy()))  //命中
+					{
+						(*BT)->ChangeHp(0);              //减少HP
 						flag = 1;
 						break;
 					}
@@ -543,6 +556,10 @@ int main()
 //信息版类 ok
 //游戏说明 ok
 //游戏胜利界面  ok
+//游戏bgm
+//多线程实现移动射击
+//长按移动卡顿
+
 
 //爆炸效果实现        ok
 //精英坦克实装        ok
@@ -550,3 +567,4 @@ int main()
 
 //炮弹碰撞bug        ok
 //敌方生成卡位bug
+

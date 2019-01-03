@@ -13,7 +13,6 @@ public:
 	void GameWin();                      //通过一关
 	TankGameMenu();
 	~TankGameMenu();
-private:
 
 };
 

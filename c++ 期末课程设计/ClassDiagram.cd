@@ -1,119 +1,133 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
-  <Class Name="Tank">
-    <Position X="2.25" Y="5.75" Width="3.25" />
-    <TypeIdentifier>
-      <HashCode>AEAAAEACIAAAAAQIABCAAAARAEEEAgAAAMAAAAAkwAA=</HashCode>
-      <FileName>Tank.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="PlayTank">
-    <Position X="3" Y="11.75" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Tank.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="NormalAITank">
-    <Position X="0.5" Y="11.75" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
-      <FileName>Tank.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BossAITank">
-    <Position X="6" Y="11.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Tank.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TankGameMenu" Collapsed="true">
-    <Position X="13.25" Y="0.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAACCAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAg=</HashCode>
-      <FileName>TankGameMenu.h</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Buff">
-    <Position X="2.75" Y="0.75" Width="2" />
+    <Position X="10.5" Y="3.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAgAQAAAAAAAgAAAgIAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAQAAAIAAAgAABAAAAAAgAAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>Buff.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MoveSpeedBuff">
-    <Position X="3" Y="3.5" Width="1.75" />
+    <Position X="11" Y="7" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Buff.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FireIntervalBuff">
-    <Position X="0.5" Y="3.5" Width="1.75" />
+    <Position X="7.75" Y="7" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Buff.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HPBuff">
-    <Position X="5.5" Y="3.5" Width="1.75" />
+    <Position X="14" Y="7" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Buff.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Shell" Collapsed="true">
-    <Position X="11.5" Y="0.75" Width="1.5" />
+  <Class Name="Map">
+    <Position X="0.5" Y="1.75" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAACAIAAAAAAAQAAAACAAAAAAAAAAAABAAAEAAA=</HashCode>
+      <HashCode>DQABACAIAhQBEQAQQAAAEAgAAASAAAIMIEAKAAAAUkI=</HashCode>
+      <FileName>Map.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MessageBoard">
+    <Position X="13.5" Y="3.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACQAAAAAAAAAAABAAxgAAAAAAAAAAAgAAEQAA=</HashCode>
+      <FileName>MessageBoard.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Object">
+    <Position X="5.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAACAAAAAAgAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shell">
+    <Position X="7.75" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAIAAAAAAAQAAAACAAAAIAAAAAAABAAAkAAA=</HashCode>
       <FileName>Shell.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Terrain" Collapsed="true">
-    <Position X="14.5" Y="1.75" Width="1.5" />
+  <Class Name="Tank">
+    <Position X="4.25" Y="3.5" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAA4EAAAACAQEAAAAAMAAA=</HashCode>
+      <HashCode>AEAAAEACIAAAEAQJABCAAAARAEEEAgAAQMAAAAAgwAA=</HashCode>
+      <FileName>Tank.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayTank">
+    <Position X="3.75" Y="9.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAIAJAAAAQAAAAEAAEAAAAAAAAEAAA=</HashCode>
+      <FileName>Tank.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NormalAITank">
+    <Position X="0.5" Y="9.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAABAAAAAAAAAEAAACAAAAAAAEAAA=</HashCode>
+      <FileName>Tank.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BossAITank">
+    <Position X="6.75" Y="9.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAABAAAAAAAAAEAAAgAAAAAAAEAAA=</HashCode>
+      <FileName>Tank.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TankGameMenu">
+    <Position X="13.75" Y="8.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAACAAAAAQAAAAAAAAAAAAAAAAAEAAEAAAAg=</HashCode>
+      <FileName>TankGameMenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Terrain">
+    <Position X="9.75" Y="8.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAACAAAAAAABAACAAAEAwAAAACCAQEAAAAAEAAA=</HashCode>
       <FileName>Terrain.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Floor" Collapsed="true">
-    <Position X="13.5" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
-      <FileName>Terrain.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="SteeWall" Collapsed="true">
-    <Position X="18" Y="3" Width="1.5" />
+  <Class Name="SteeWall">
+    <Position X="7.75" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Terrain.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="SodWall" Collapsed="true">
-    <Position X="9" Y="3" Width="1.5" />
+  <Class Name="SodWall">
+    <Position X="12.5" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Terrain.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Brush" Collapsed="true">
-    <Position X="15.75" Y="3" Width="1.5" />
+  <Class Name="Brush">
+    <Position X="5.5" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Terrain.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="River" Collapsed="true">
-    <Position X="20.25" Y="3" Width="1.5" />
+  <Class Name="River">
+    <Position X="10" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Terrain.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Home" Collapsed="true">
-    <Position X="11.25" Y="3" Width="1.5" />
+  <Class Name="Home">
+    <Position X="15" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Terrain.h</FileName>

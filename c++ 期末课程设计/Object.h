@@ -6,7 +6,6 @@ class Object
 {
 public:
 	virtual void Print()=0; //需要打印
-	                        //有碰撞效果
 protected:
 	Dir Direction;  //方向
 	COORD XY;       //左上角坐标

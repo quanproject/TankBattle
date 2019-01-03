@@ -18,10 +18,12 @@ const int STEEWALL = 6;    //铁墙 不易破坏的墙
 const int BRUSH = 7;       //灌木 坦克可以穿越 炮弹无法穿过
 const int RIVER = 8;       //河流 坦克不能穿越 炮弹可以穿越
 
+
 struct MapTerrain
 {
 	bool TankT = 1, ShellT = 1; 
 };    //控制整个地图的地形属性 （标记坦克能否穿越等
+
 
 
 
@@ -34,9 +36,9 @@ constexpr auto PI = 3.1415926535;         //用于旋转图片
 
 
 //游戏平衡数据
-const int SpeedLevel_1 = 6;   //移动速度
-const int SpeedLevel_2 = 10;
-const int SpeedLevel_3 = 15;
+const int SpeedLevel_1 = 10;   //移动速度
+const int SpeedLevel_2 = 15;
+const int SpeedLevel_3 = 20;
 
 const int IntervalLevel_1 = 15;  //攻击冷却时间
 const int IntervalLevel_2 = 10;
