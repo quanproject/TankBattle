@@ -4,6 +4,8 @@
 #include"TankGameMenu.h"   //游戏菜单类
 #include"Terrain.h"        //地形类
 #include"MessageBoard.h"   //信息板类
+#pragma comment(lib,"Winmm.lib")  //bgm库
+
 using namespace std;
 
 list<Shell*> PlayerTankShell;         //存储玩家坦克的子弹 
@@ -114,7 +116,11 @@ bool const JudgmentShellCollision(COORD shellxy,Dir shelldir)
 int main()
 {
 	TankGameMenu GAME;
+	mciSendString("open start.mp3 alias StartMusic", NULL, 0, NULL);  	// 打开音乐文件
+	mciSendString("play StartMusic", NULL, 0, NULL);  //播放音乐
 	GAME.printTankGameMenu();
+	mciSendString("stop StartMusic", NULL, 0, NULL);  //停止播放并关闭startBGM
+	mciSendString("close StartMusic", NULL, 0, NULL);
 
 
 	setfillcolor(BLACK);            //设置初始背景颜色
@@ -122,7 +128,7 @@ int main()
 
 	srand((unsigned int)time(NULL));
 
-	////////////////////////////////////////////////////测试范围//////////////////////////////////////////////////
+
 	//定义多个对象
 
 
@@ -160,11 +166,16 @@ int main()
 			loadimage(&img1, _T("chapter_1.jpg"));     //读取照片
 			putimage(0,300, &img1);
 			Sleep(3000);
+			mciSendString("open c1.mp3 alias card1Music", NULL, 0, NULL);  	// 打开音乐文件
+			mciSendString("play card1Music", NULL, 0, NULL);  //播放音乐
+			mciSendString("play card1Music repeat", NULL, 0, NULL);  //播放音乐
 		}
 		else if (card == 2)
 		{
 			//地图生成第二关
 		}
+
+
 
 		BeginBatchDraw();          //开始批量绘图
 		//循环游戏过程
@@ -521,7 +532,6 @@ int main()
 
 			FlushBatchDraw();  //批量绘图
 			Sleep(GameSpeed); //游戏延迟
-	//		cleardevice();    //清除屏幕
 		}
 		EndBatchDraw();         //结束批量绘图
 		gamemap.CloseMap();     //释放地图内存
@@ -534,7 +544,7 @@ int main()
 		//根据血量判断
 		if (player.GetHP() == 0)
 		{
-			Sleep(2000);       //冷静一下
+			mciSendString("close all", NULL, 0, NULL);   //关闭所有音乐
 			GAME.GameOver();    //重新开始/退出
 		}
 		else
